@@ -32,9 +32,10 @@
           MagicMeow is an efficiency tool that combines<br>
           psychology-based UI design, an AI assistant,<br>
           and time management strategies.<br><br>
-          ✨ Everything is delightfully cute and perfectly organized!
+          Everything is delightfully cute and perfectly organized!
         </p>
-        <button class="start-btn" onclick="window.location.href='{{ url_for('main') }}'">Start > </button>
+        <button class="start-btn"
+        onclick="window.location.href=`{{ url_for('main') }}`"> Start</button>
       </div>
       <div class="hero-image">
         <img src="{{ url_for('static', filename='images/icon-cat.png') }}" alt="Cat icon" />
@@ -79,9 +80,9 @@
         </p>
         <p style="margin-top: 30px;">
           Whether it's<br>
-          ⏳ Focus Time<br>
-          🗓️ Daily Planning<br>
-          📊 Data Analytics,<br>
+          Focus Time<br>
+          Daily Planning<br>
+          Data Analytics,<br>
           Bunny is here to support you, making<br>
           every moment more efficient and<br>
           enjoyable!
