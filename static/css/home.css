@@ -575,6 +575,21 @@ body {
     padding: 0 0.625rem;
 }
 
+#newChatBtn {
+    font-family: 'Jua', sans-serif;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    margin: 0 0.625rem 0.625rem;
+    border: 2px solid black;
+    border-radius: 0.625rem;
+    background: white;
+    cursor: pointer;
+}
+
+#newChatBtn:hover {
+    background: #f0f0f0;
+}
+
 .chat-session {
     padding: 0.5rem 0;
     border-bottom: 1px solid black;
