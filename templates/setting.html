@@ -7,58 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/setting.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
-    <style>
-        .avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 3px solid black;
-            object-fit: cover;
-            transition: width 0.3s, height 0.3s;
-            margin-top: 5px;
-        }
-        body.dark .avatar,
-        body.dark-blue .avatar,
-        body.dark-purple .avatar {
-            border: 3px solid #E0E0E0;
-        }
-        body.dark-blue .avatar {
-            border: 3px solid #A0B0D0;
-        }
-        body.dark-purple .avatar {
-            border: 3px solid #B0A0D0;
-        }
-        .sidebar.open .avatar {
-            width: 100px;
-            height: 100px;
-        }
-        .sidebar-controls {
-            display: flex;
-            position: absolute;
-            align-items: flex-start;
-            left: 10vh;
-            top: calc(0.463vh + 0.260vw);
-            flex-direction: column;
-            gap: 0px;
-            transition: left 0.3s ease;
-        }
-        .sidebar.open ~ .sidebar-controls {
-            left: 400px;
-        }
-        .toggle-btn {
-            display: flex;
-            align-items: center;
-            font-family: 'Jua', sans-serif;
-            font-size: 16px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-        }
-        .toggle-btn img {
-            width: 40px;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
