@@ -1260,7 +1260,6 @@ input:checked+.toggle-button:before {
     z-index: 2;
 }
 
-/* plan-details */
 .plan-details {
     display: none;
     width: 580px;
@@ -1649,10 +1648,6 @@ input:checked+.toggle-button:before {
     font-weight: normal;
 }
 
-/* chat */
-/* message box */
-
-/* message box */
 .message-box-wrapper {
     position: fixed;
     right: 0;
