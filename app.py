@@ -27,8 +27,13 @@ app.template_folder = 'templates'
 app.secret_key = os.getenv('SECRET_KEY')
 app.register_blueprint(statistics_bp)
 
+# 持久化数据目录 (Railway volume on prod, local folder on dev)
+DATA_DIR = os.getenv('DATA_DIR', '.')
+if not os.path.exists(DATA_DIR):
+    os.makedirs(DATA_DIR, exist_ok=True)
+
 # 文件上传配置
-UPLOAD_FOLDER = 'static/uploads'
+UPLOAD_FOLDER = os.path.join(DATA_DIR, 'uploads') if os.getenv('DATA_DIR') else 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -37,11 +42,22 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # JSON 文件路径
-USERS_JSON = 'users.json'
+USERS_JSON = os.path.join(DATA_DIR, 'users.json')
+CHAT_DB = os.path.join(DATA_DIR, 'chat_history.db')
+
+# Миграция: если на volume ещё нет users.json, но в репо есть — копируем
+_legacy_users = 'users.json'
+if os.getenv('DATA_DIR') and not os.path.exists(USERS_JSON) and os.path.exists(_legacy_users):
+    import shutil
+    shutil.copy(_legacy_users, USERS_JSON)
+_legacy_db = 'chat_history.db'
+if os.getenv('DATA_DIR') and not os.path.exists(CHAT_DB) and os.path.exists(_legacy_db):
+    import shutil
+    shutil.copy(_legacy_db, CHAT_DB)
 
 # 初始化 SQLite 数据库
 def init_chat_db():
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         conn.execute('''
             CREATE TABLE IF NOT EXISTS history (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -411,7 +427,7 @@ def create_new_chat_session():
     session['chat_session_id'] = session_id
 
     # Unset is_current for all other sessions
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         conn.execute('UPDATE history SET is_current = 0 WHERE user_id = ?', (user_id,))
         conn.commit()
 
@@ -421,7 +437,7 @@ def create_new_chat_session():
 @app.route('/api/chat/delete/<session_id>', methods=['DELETE'])
 def delete_chat_session(session_id):
     user_id = session.get('user_id', 'guest')
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         cursor = conn.execute('SELECT COUNT(*) FROM history WHERE user_id = ? AND session_id = ?', (user_id, session_id))
         if cursor.fetchone()[0] == 0:
             return jsonify({'error': 'Session not found'}), 404
@@ -448,7 +464,7 @@ def chat():
         # Update is_current and latest_update for the current session
         session_id = session.get('chat_session_id')
         if session_id:
-            with sqlite3.connect('chat_history.db') as conn:
+            with sqlite3.connect(CHAT_DB) as conn:
                 conn.execute('UPDATE history SET is_current = 0 WHERE user_id = ?', (user_id,))
                 conn.execute('UPDATE history SET is_current = 1, latest_update = ? WHERE user_id = ? AND session_id = ?',
                              (datetime.now().isoformat(), user_id, session_id))
@@ -463,7 +479,7 @@ def chat():
 @app.route('/api/chat_history', methods=['GET'])
 def chat_history():
     user_id = session.get('user_id', 'guest')
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         cursor = conn.execute('''
             SELECT DISTINCT session_id, session_title, MAX(timestamp) as timestamp, is_current, MAX(latest_update) as latest_update
             FROM history
@@ -487,7 +503,7 @@ def chat_history():
 @app.route('/api/chat_history/<session_id>', methods=['GET'])
 def chat_session(session_id):
     user_id = session.get('user_id', 'guest')
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         # Update is_current and latest_update when accessing a session
         conn.execute('UPDATE history SET is_current = 0 WHERE user_id = ?', (user_id,))
         conn.execute('UPDATE history SET is_current = 1, latest_update = ? WHERE user_id = ? AND session_id = ?',
@@ -518,7 +534,7 @@ def current_session():
     session_id = session.get('chat_session_id')
     if not session_id:
         return jsonify({'messages': []})
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         cursor = conn.execute('''
             SELECT role, content, is_current, latest_update
             FROM history
@@ -548,7 +564,7 @@ def user_summary():
         return jsonify({'success': False, 'error': 'User not found'}), 404
 
     # Fetch recent chat messages
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         cursor = conn.execute('''
             SELECT content FROM history
             WHERE user_id = ? AND role = 'user'

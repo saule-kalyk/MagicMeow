@@ -1,10 +1,14 @@
 from flask import Blueprint, jsonify, request, session
 from datetime import datetime, timedelta
 import json
+import os
 from flask import Blueprint, render_template
 
 
 statistics_bp = Blueprint('statistics', __name__)
+
+DATA_DIR = os.getenv('DATA_DIR', '.')
+USERS_JSON = os.path.join(DATA_DIR, 'users.json')
 
 monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -13,14 +17,14 @@ monthNames = [
 
 def read_users():
     try:
-        with open('users.json', 'r') as f:
+        with open(USERS_JSON, 'r') as f:
             data = json.load(f)
             return data['users']
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
 def write_users(users):
-    with open('users.json', 'w') as f:
+    with open(USERS_JSON, 'w') as f:
         json.dump({'users': users}, f, indent=4)
 
 @statistics_bp.route('/api/plan_stats', methods=['GET'])
