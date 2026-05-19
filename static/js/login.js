@@ -8,3 +8,10 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         errorMessage.textContent = 'Please fill in all fields.';
     }
 });
+
+const googleBtn = document.getElementById('google-login-btn');
+if (googleBtn) {
+    googleBtn.addEventListener('click', function() {
+        window.location.href = googleBtn.dataset.url;
+    });
+}

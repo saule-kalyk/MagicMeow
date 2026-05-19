@@ -14,8 +14,10 @@ body {
     height: 100vh;
 }
 
+/* SIDEBAR */
 .sidebar {
-    width: 90px;
+    width: 5.625rem;           
+    height: 100vh;
     background: white;
     transition: width 0.3s ease;
     overflow: hidden;
@@ -24,43 +26,54 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding-bottom: 20px;
-}
-
-.divider {
-    width: 50px;
-    height: 2px;
-    background: rgba(0, 0, 0);
-    margin: 10px auto;
-    transition: width 0.3s ease;
+    padding-bottom: 1rem;
+    flex-shrink: 0;
 }
 
 .sidebar.open {
-    width: 400px;
+    width: 25rem;             
+}
+
+.divider {
+    width: 3.125rem;
+    height: 2px;
+    background: rgba(0, 0, 0, 1);
+    margin: 0.625rem auto;
+    transition: width 0.3s ease;
 }
 
 .sidebar.open .divider {
     width: 80%;
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 .sidebar-content {
     width: 100%;
-    padding: 10px;
+    height: 100%;
+    padding: 0.625rem;
     text-align: left;
+    display: flex;
+    flex-direction: column;
 }
 
 .user-info {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    margin-left: 11px;
+    gap: 0.625rem;
+    margin-bottom: 0.75rem;
+    margin-left: 0;
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar.open .user-info {
+    align-items: center;
+    margin-top: 4px;
+    margin-left: 0.6875rem;
+    width: auto;
 }
 
 .avatar {
-    width: 60px;
-    height: 60px;
+    width: 3.75rem;
+    height: 3.75rem;
     border-radius: 50%;
     border: 3px solid black;
     object-fit: cover;
@@ -68,137 +81,158 @@ body {
 }
 
 .sidebar.open .avatar {
-    width: 100px;
-    height: 100px;
+    width: 6rem;
+    height: 6rem;
 }
 
 .user-text {
     display: flex;
     flex-direction: column;
-    padding-top: 25px;
+    padding-top: 1.5625rem;
 }
 
 .user {
-    margin: 0px;
+    margin: 0;
 }
 
 #days {
     color: #FBBC05;
 }
 
-.sidebar.open .user-info {
-    align-items: center;
-    margin-top: 4px;
-    width: 60px;
-}
-
-.sidebar.open .avatar {
-    width: 100px;
-}
-
 .sidebar-text {
-    display: none;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.3s ease, max-width 0.3s ease;
 }
 
 .sidebar.open .sidebar-text {
-    display: inline;
+    opacity: 1;
+    max-width: 12.5rem;
 }
 
 .menu {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.625rem;
     padding: 0;
     margin: 0;
     align-items: center;
+    flex: 1;
+    width: 100%;
 }
 
 .menu-btn {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 0;
     width: 80%;
     background: none;
     border: none;
-    padding: 10px;
+    padding: 0.5rem;
     cursor: pointer;
     text-align: left;
-    margin-bottom: 5px;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     font-family: 'Jua', sans-serif;
     font-weight: lighter;
-    font-size: 20px;
+    font-size: 1.25rem;
+    transition: gap 0.3s ease;
+}
+
+.sidebar.open .menu-btn {
+    justify-content: flex-start;
+    gap: 0.625rem;
+    padding-left: 1.25rem;
+}
+
+.menu-btn img {
+    width: 2.25rem;
+}
+
+.sidebar.open .menu-btn img {
+    width: 3.125rem;
 }
 
 .add-plan {
     display: flex;
-    margin-top: 60px;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-top: auto;
     border: none;
     background: none;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    padding: 0.5rem;
+    width: 80%;
+    border-radius: 5px;
+    transition: gap 0.3s ease;
+}
+
+.sidebar.open .add-plan {
+    justify-content: flex-start;
+    gap: 0.625rem;
+    padding-left: 1.25rem;
+}
+
+.add-plan .plus-icon {
+    width: 2.25rem !important;
+}
+
+.sidebar.open .add-plan .plus-icon {
+    width: 3.125rem !important;
 }
 
 .sidebar.open .add-plan {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 150px;
-    padding: 12px 20px;
+    width: 9.375rem;
+    padding: 0.75rem 1.25rem;
     background: black;
     color: white;
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: lighter;
     border: none;
     border-radius: 10px;
-    cursor: pointer;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
     font-family: 'Jua', sans-serif;
-    font-weight: lighter;
 }
 
-.menu-btn img {
-    width: 50px;
-}
-
-.sidebar-text {
-    display: none;
-}
-
-.sidebar.open .sidebar-text {
-    display: inline;
-}
-
+/* SIDEBAR TOGGLE BUTTON */
 .sidebar-controls {
-    display: flex;
     position: absolute;
     align-items: flex-start;
-    left: 95px;
-    top: 10px;
+    left: calc(5.625rem + 0.625rem);  
+    top: 0.625rem;
     display: flex;
     flex-direction: column;
-    gap: 0px;
+    gap: 0;
     transition: left 0.3s ease;
     z-index: 200;
 }
 
 .sidebar.open ~ .sidebar-controls {
-    left: 400px;
+    left: calc(25rem + 0.625rem);    
 }
 
 .toggle-btn {
     display: flex;
     align-items: center;
     font-family: 'Jua', sans-serif;
+    font-size: 1rem;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px;
+    padding: 0.3125rem;
 }
 
 .toggle-btn img {
-    width: 40px;
+    width: 2.5rem;
 }
 
 .main-content {
@@ -211,7 +245,9 @@ body {
     transition: width 0.3s ease;
     position: relative;
     max-width: auto;
-    margin-right: 611px;
+    margin-right: 472.5px;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .tabs {
@@ -232,9 +268,9 @@ body {
 }
 
 .tab img {
-    width: 200px;
+    width: 140px;
     height: auto;
-    margin: 0 20px 0 40px;
+    margin: 0 10px;
     display: flex;
 }
 
@@ -245,16 +281,16 @@ body {
 .tab span {
     position: absolute;
     top: 55%;
-    left: 53%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: lighter;
     color: black;
 }
 
 .dashed-line {
     position: absolute;
-    top: 208px;
+    top: 150px;
     right: 0px;
     width: 100%;
     border-bottom: 2px dashed black;
@@ -269,16 +305,17 @@ body {
 .daily-header {
     display: flex;
     justify-content: space-between;
-    width: 80%;
+    align-items: center;
+    width: 90%;
     height: 60px;
-    margin-top: 280px;
-    margin-left: 100px;
+    margin-top: 200px;
+    margin-left: 0;
 }
 
 .daily-header img {
     width: auto;
-    height: 180px;
-    margin-top: -100px;
+    height: 120px;
+    margin-top: -60px;
 }
 
 .horizontal-line {
@@ -289,11 +326,11 @@ body {
 }
 
 .year {
-    font-size: 60px;
+    font-size: 42px;
     color: #b39ddb;
     font-weight: lighter;
-    margin-right: 60px;
-    margin-top: -30px;
+    margin-right: 30px;
+    margin-top: 0;
 }
 
 .month-week {
@@ -338,15 +375,15 @@ body {
 
 .addFolder {
     position: absolute;
-    top: 210px;
-    right: 30px;
+    top: 160px;
+    right: 20px;
     background: none;
     border: none;
     cursor: pointer;
 }
 
 .addFolder img {
-    width: 60px;
+    width: 45px;
 }
 
 .day-scroll-container {
@@ -769,7 +806,7 @@ body {
     right: 0;
     top: 0;
     height: 100vh;
-    width: 610px;
+    width: 472.5px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -855,7 +892,10 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: end;
-    width: 500px;
+    width: 100%;
+    max-width: 440px;
+    padding: 0 15px;
+    box-sizing: border-box;
     height: 100vh;
 }
 
@@ -952,11 +992,12 @@ body {
 
 .message-box-input input {
     flex-grow: 1;
+    min-width: 0;
     padding: 15px;
     border: 2px solid black;
     border-radius: 10px;
-    width: 300px;
     margin: 0 0 10px 0;
+    font-family: 'Jua', sans-serif;
 }
 
 .send-btn {

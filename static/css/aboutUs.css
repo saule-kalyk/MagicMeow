@@ -20,20 +20,20 @@ body {
     display: flex;
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
-    background-size: 40px 40px;
+    background-image: linear-gradient(rgba(0,0,0,0.1) 0.0625rem, transparent 0.0625rem),
+                      linear-gradient(90deg, rgba(0,0,0,0.1) 0.0625rem, transparent 0.0625rem);
+    background-size: 2.5rem 2.5rem;
 }
 
 /* SIDEBAR */
 .sidebar {
-    width: 5.625rem;           
+    width: 5.625rem;
     height: 100vh;
     background: white;
     transition: width 0.3s ease;
     overflow: hidden;
-    border-right: 2px solid black;
-    border-radius: 10px;
+    border-right: 0.125rem solid black;
+    border-radius: 0.625rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -42,12 +42,12 @@ body {
 }
 
 .sidebar.open {
-    width: 25rem;             
+    width: 25rem;
 }
 
 .divider {
     width: 3.125rem;
-    height: 2px;
+    height: 0.125rem;
     background: rgba(0, 0, 0, 1);
     margin: 0.625rem auto;
     transition: width 0.3s ease;
@@ -77,7 +77,7 @@ body {
 
 .sidebar.open .user-info {
     align-items: center;
-    margin-top: 4px;
+    margin-top: 0.25rem;
     margin-left: 0.6875rem;
     width: auto;
 }
@@ -86,7 +86,7 @@ body {
     width: 3.75rem;
     height: 3.75rem;
     border-radius: 50%;
-    border: 3px solid black;
+    border: 0.1875rem solid black;
     object-fit: cover;
     transition: width 0.3s, height 0.3s;
 }
@@ -145,8 +145,8 @@ body {
     padding: 0.5rem;
     cursor: pointer;
     text-align: left;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+    box-shadow: 0.1875rem 0.1875rem 0.375rem rgba(0, 0, 0, 0.2);
+    border-radius: 0.3125rem;
     font-family: 'Jua', sans-serif;
     font-weight: lighter;
     font-size: 1.25rem;
@@ -175,11 +175,11 @@ body {
     margin-top: auto;
     border: none;
     background: none;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0.1875rem 0.1875rem 0.375rem rgba(0, 0, 0, 0.2);
     cursor: pointer;
     padding: 0.5rem;
     width: 80%;
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     transition: gap 0.3s ease;
 }
 
@@ -208,8 +208,8 @@ body {
     font-size: 1.25rem;
     font-weight: lighter;
     border: none;
-    border-radius: 10px;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0.625rem;
+    box-shadow: 0.25rem 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
     font-family: 'Jua', sans-serif;
 }
@@ -218,7 +218,7 @@ body {
 .sidebar-controls {
     position: absolute;
     align-items: flex-start;
-    left: calc(5.625rem + 0.625rem);  
+    left: calc(5.625rem + 0.625rem);
     top: 0.625rem;
     display: flex;
     flex-direction: column;
@@ -228,7 +228,7 @@ body {
 }
 
 .sidebar.open ~ .sidebar-controls {
-    left: calc(25rem + 0.625rem);    
+    left: calc(25rem + 0.625rem);
 }
 
 .toggle-btn {
@@ -248,25 +248,25 @@ body {
 
 /* MAIN CONTENT */
 .main-content {
-    flex-grow: 1;
+    flex: 1;
+    min-width: 0;
     padding: 1.25rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 100vh;
     overflow-y: auto;
-    min-width: 0;             
 }
 
 .about-box {
     background: white;
     padding: 1.5625rem;
     border-radius: 1.25rem;
-    border: 2px solid black;
+    border: 0.125rem solid black;
     width: 100%;
-    max-width: 50rem;           
+    max-width: 50rem;
     text-align: left;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0.1875rem 0.1875rem 0.625rem rgba(0, 0, 0, 0.1);
     margin-bottom: 3.125rem;
     z-index: 1;
 }
@@ -295,6 +295,7 @@ body {
     font-size: 1.125rem;
     color: black;
     line-height: 1.5;
+    word-wrap: break-word;
 }
 
 .features-list,
@@ -305,19 +306,20 @@ body {
 }
 
 .features-list li,
-.why-list li,
-.team-list li {
+.why-list li {
     font-size: 1.125rem;
     margin-bottom: 0.9375rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.625rem;
+    line-height: 1.5;
 }
 
 .features-list img {
     width: 1.875rem;
     height: 1.875rem;
     flex-shrink: 0;
+    margin-top: 0.125rem;
 }
 
 .team-list li {
@@ -325,6 +327,9 @@ body {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
+    font-size: 1.125rem;
+    margin-bottom: 0.9375rem;
+    line-height: 1.5;
 }
 
 .team-name {
@@ -347,16 +352,50 @@ body {
 .about-section a {
     color: #CEB3FF;
     text-decoration: none;
+    word-break: break-word;
 }
 
 .about-section a:hover {
     text-decoration: underline;
 }
 
+@media (max-width: 1280px) {
+    .sidebar.open {
+        width: 22rem;
+    }
+    .sidebar.open ~ .sidebar-controls {
+        left: calc(22rem + 0.625rem);
+    }
+    .about-box {
+        max-width: 45rem;
+        padding: 1.375rem;
+    }
+}
 
 @media (max-width: 1024px) {
+    .sidebar.open {
+        width: 20rem;
+    }
+    .sidebar.open ~ .sidebar-controls {
+        left: calc(20rem + 0.625rem);
+    }
+    .sidebar.open .avatar {
+        width: 5rem;
+        height: 5rem;
+    }
+    .sidebar.open .menu-btn img,
+    .sidebar.open .add-plan .plus-icon {
+        width: 2.625rem !important;
+    }
     .about-box {
-        max-width: 90%;
+        max-width: 40rem;
+        padding: 1.25rem;
+    }
+    .about-title {
+        font-size: 1.625rem;
+    }
+    .about-section h3 {
+        font-size: 1.375rem;
     }
 }
 
@@ -367,21 +406,21 @@ body {
         left: 0;
         height: 100vh;
         z-index: 150;
-        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0.125rem 0 0.5rem rgba(0, 0, 0, 0.1);
     }
     .sidebar.open {
-        width: 17.5rem;         
+        width: 17.5rem;
     }
     .sidebar.open ~ .sidebar-controls {
         left: calc(17.5rem + 0.625rem);
     }
     .main-content {
-        padding-left: 6.5rem;   
+        padding-left: 6.5rem;
         padding-right: 1rem;
     }
     .about-box {
         max-width: 100%;
-        padding: 1.25rem;
+        padding: 1.125rem;
     }
     .about-title {
         font-size: 1.5rem;
@@ -395,26 +434,8 @@ body {
     .team-list li {
         font-size: 1rem;
     }
-}
-
-@media (max-width: 480px) {
-    .sidebar {
-        width: 4.375rem;        
-    }
-    .sidebar-controls {
-        left: calc(4.375rem + 0.625rem);
-    }
-    .sidebar.open {
-        width: 15rem;
-    }
-    .sidebar.open ~ .sidebar-controls {
-        left: calc(15rem + 0.625rem);
-    }
-    .main-content {
-        padding-left: 5.25rem;
-    }
-    .menu-btn img,
-    .add-plan img {
-        width: 2.5rem;
+    .features-list img {
+        width: 1.5rem;
+        height: 1.5rem;
     }
 }

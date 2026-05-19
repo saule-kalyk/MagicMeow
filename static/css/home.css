@@ -512,7 +512,7 @@ body {
 }
 
 .threebtn {
-    display: flex;
+    display: none;
     justify-content: flex-start;
     flex-direction: row;
     width: 100%;

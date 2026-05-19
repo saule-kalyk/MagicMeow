@@ -29,8 +29,8 @@
                 <a href="{{ url_for('create_account') }}" class="signup">Sign Up</a>
                 <button type="submit" class="login-btn">Login</button>
                 <p class="or-text">Or</p>
-                <button type="button" class="google-login" onclick="window.location.href='{{ url_for('google_login') }}'">
-                    <img src="{{ url_for('static', filename='images/google.png') }}" alt="Google" style="width: 30px; margin-right: 10px; margin-top: 3px;">
+                <button type="button" class="google-login" id="google-login-btn" data-url="{{ url_for('google_login') }}">
+                    <img src="{{ url_for('static', filename='images/google.png') }}" alt="Google" class="google-icon">
                     Login with Google
                 </button>
             </form>

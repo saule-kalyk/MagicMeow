@@ -15,7 +15,6 @@ body {
     background-color: #ffffff;
     font-family: 'Jua', sans-serif;
     font-weight: 400;
-    overflow: hidden;
 }
 
 .container {
@@ -31,6 +30,7 @@ body {
 
 .login-box {
     flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -49,6 +49,7 @@ body {
 
 .image-box {
     flex: 1;
+    min-width: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -68,9 +69,9 @@ body {
 .logo img {
     width: 7.5rem;
     height: auto;
-    margin-right: -5px;
+    margin-right: -0.3125rem;
     position: relative;
-    bottom: -20px;
+    bottom: -1.25rem;
 }
 
 .input-field {
@@ -78,7 +79,7 @@ body {
     height: 2.25rem;
     padding: 0.5rem 0.75rem;
     margin: 0.5rem 0;
-    border: 2px solid #ccc;
+    border: 0.125rem solid #ccc;
     border-radius: 0.9375rem;
     font-family: 'Jua', sans-serif;
     font-size: 1.125rem;
@@ -125,7 +126,7 @@ body {
 .or-text::after {
     content: "";
     flex: 1 1 0;
-    height: 1px;
+    height: 0.0625rem;
     background: #777;
     min-width: 0;
 }
@@ -134,7 +135,7 @@ body {
     width: 100%;
     height: 3.5rem;
     padding: 0.5rem;
-    border: 2px solid #000;
+    border: 0.125rem solid #000;
     border-radius: 1.25rem;
     background: white;
     cursor: pointer;
@@ -146,8 +147,14 @@ body {
     justify-content: center;
 }
 
+.google-icon {
+    width: 1.875rem;
+    margin-right: 0.625rem;
+    margin-top: 0.1875rem;
+}
+
 .separator {
-    width: 2px;
+    width: 0.125rem;
     background-color: #4a2c2a;
     align-self: stretch;
     margin: 4rem 0;
@@ -163,16 +170,52 @@ body {
 .error {
     min-height: 1.25rem;
     font-size: 0.875rem;
+    color: red;
+}
+
+@media (max-width: 1280px) {
+    .container {
+        max-width: 80rem;
+    }
+    .image-box img {
+        max-width: 40rem;
+    }
+    .logo {
+        margin-top: -3rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        max-width: 60rem;
+    }
+    .image-box img {
+        max-width: 28rem;
+    }
+    .logo {
+        font-size: 2.25rem;
+        margin-top: -2rem;
+    }
+    .logo img {
+        width: 6rem;
+    }
+    .separator {
+        margin: 2rem 0;
+    }
+    .login-box {
+        padding: 1.5rem 1rem;
+    }
 }
 
 @media (max-width: 768px) {
     body {
-        overflow: auto;
+        align-items: flex-start;
     }
     .container {
         flex-direction: column;
         height: auto;
         max-height: none;
+        max-width: 100%;
     }
     .separator {
         display: none;
@@ -185,7 +228,11 @@ body {
         max-width: 22rem;
     }
     .logo {
+        font-size: 2rem;
         margin-top: 0;
+    }
+    .logo img {
+        width: 5.625rem;
     }
     .login-box {
         padding: 1rem;
@@ -193,18 +240,6 @@ body {
     }
     #login-form {
         max-width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .image-box img {
-        max-width: 15rem;
-    }
-    .logo {
-        font-size: 2rem;
-    }
-    .logo img {
-        width: 5.625rem;
     }
     .input-field {
         font-size: 1rem;
