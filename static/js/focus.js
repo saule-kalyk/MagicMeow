@@ -127,23 +127,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function parseTimeInput(input) {
-        const timePattern = /^(\d{1,2}):(\d{2})$/;
-        const match = input.match(timePattern);
+        const minutesPattern = /^\d{1,3}$/;
+        const trimmed = input.trim();
 
-        if (!match) {
-            alert("Please enter time in MM:SS format (e.g., 25:30)");
+        if (!minutesPattern.test(trimmed)) {
+            alert("Please enter the number of minutes (e.g., 30)");
             return null;
         }
 
-        const minutes = parseInt(match[1], 10);
-        const seconds = parseInt(match[2], 10);
+        const minutes = parseInt(trimmed, 10);
 
-        if (minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
-            alert("Minutes and seconds must be between 0 and 59");
+        if (minutes < 1 || minutes > 180) {
+            alert("Minutes must be between 1 and 180");
             return null;
         }
 
-        return minutes * 60 + seconds;
+        return minutes * 60;
     }
 
     function startTimer() {
@@ -205,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function resetToInitialState() {
         focusTitle.textContent = "FOCUS TIME";
         pauseBtn.style.display = "none";
-        addFocusBtn.style.display = "block";
+        addFocusBtn.style.display = "flex";
         startBtn.style.display = "block";
         finCont.style.display = "none";
         confirmPopup.style.display = "none";
@@ -218,13 +217,13 @@ document.addEventListener("DOMContentLoaded", function () {
     updateTimerDisplay();
 
     addFocusBtn.addEventListener("click", function () {
-        timeInput.value = formatTime(timeLeft);
+        timeInput.value = Math.round(timeLeft / 60);
         popupBox.classList.add("active");
     });
 
     cancelBtn.addEventListener("click", function () {
         popupBox.classList.remove("active");
-        timeInput.value = "30:00";
+        timeInput.value = "30";
     });
 
     confirmBtn.addEventListener("click", function () {

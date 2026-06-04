@@ -618,6 +618,7 @@ body {
     position: relative;
     padding-left: 0.625rem;
     padding-bottom: 0.625rem;
+    width: 100%;
 }
 
 .chart-area::before {
@@ -645,7 +646,8 @@ body {
     justify-content: center;
     align-items: flex-end;
     gap: 1.875rem;
-    width: 80%;
+    width: fit-content;
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -708,6 +710,7 @@ body {
     padding-bottom: 0.625rem;
     display: block;
     align-items: end;
+    width: 100%;
 }
 
 .chart-area-daily::before {
@@ -735,8 +738,9 @@ body {
     justify-content: center;
     align-items: flex-end;
     gap: 1.875rem;
-    width: 80%;
-    margin: 0 3.125rem 0 3.125rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .bar-daily {
