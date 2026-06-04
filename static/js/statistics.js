@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const quadrants = ['Red', 'Blue', 'Yellow', 'Green'];
         const tasks = document.querySelectorAll(`#${tab}-content .task`);
         const canvasId = tab === 'daily' ? 'chartCanvas-daily' : tab === 'monthly' ? 'chartCanvas' : 'chartCanvas-all';
-        const toggleId = `chartToggle-${tab}`;
+        const toggleId = tab === 'monthly' ? 'chartToggle' : `chartToggle-${tab}`;
 
         quadrants.forEach((quadrant, index) => {
             const task = tasks[index];

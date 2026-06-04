@@ -23,6 +23,40 @@ def read_users():
     except (FileNotFoundError, json.JSONDecodeError):
         return []
 
+def plan_date(plan):
+    """Дата плана для фильтрации (YYYY-MM-DD).
+    Реальные планы хранят date_start/date_end; старые могли хранить date."""
+    return plan.get('date') or plan.get('date_start') or ''
+
+def record_date(record):
+    """Дата фокус-записи (YYYY-MM-DD). Записи хранят timestamp (ISO) или date."""
+    if record.get('date'):
+        return record['date']
+    ts = record.get('timestamp', '')
+    return ts[:10] if ts else ''
+
+def record_minutes(record):
+    """Длительность фокуса в минутах. duration хранится в секундах."""
+    try:
+        return (record.get('duration') or 0) / 60
+    except (TypeError, ValueError):
+        return 0
+
+# Фронтенд (addPlan.js) сохраняет квадрант как позицию, а статистика считает по цветам.
+QUADRANT_MAP = {
+    'top-left': 'Yellow',
+    'top-right': 'Red',
+    'bottom-left': 'Green',
+    'bottom-right': 'Blue',
+}
+
+def normalize_quadrant(quadrant):
+    """Приводит квадрант к цвету. Поддерживает и позиции (top-right),
+    и уже-цвета (Red) для совместимости со старым форматом."""
+    if quadrant in ('Red', 'Blue', 'Yellow', 'Green'):
+        return quadrant
+    return QUADRANT_MAP.get(quadrant)
+
 def write_users(users):
     with open(USERS_JSON, 'w') as f:
         json.dump({'users': users}, f, indent=4)
@@ -56,15 +90,15 @@ def get_plan_stats():
     current_year = datetime.now().strftime('%Y')
     print(f"Current year: {current_year}")  # Debug: Log current year
 
-    daily_plans = [p for p in plans if p['date'] == current_date]
-    monthly_plans = [p for p in plans if p['date'].startswith(current_month)]
-    all_plans = [p for p in plans if p['date'].startswith(current_year)]
+    daily_plans = [p for p in plans if plan_date(p) == current_date]
+    monthly_plans = [p for p in plans if plan_date(p).startswith(current_month)]
+    all_plans = [p for p in plans if plan_date(p).startswith(current_year)]
     print(f"All plans (yearly): {all_plans}")  # Debug: Log yearly plans
 
     def calculate_stats(plans):
         stats = {'Red': {'completed': 0, 'total': 0}, 'Blue': {'completed': 0, 'total': 0}, 'Yellow': {'completed': 0, 'total': 0}, 'Green': {'completed': 0, 'total': 0}}
         for plan in plans:
-            quadrant = plan.get('quadrant', 'Red')
+            quadrant = normalize_quadrant(plan.get('quadrant'))
             if quadrant in stats:
                 stats[quadrant]['total'] += 1
                 if plan.get('completed', False):
@@ -197,35 +231,35 @@ def get_focus_stats():
     current_month = datetime.now().strftime('%Y-%m')
     current_year = datetime.now().strftime('%Y')
 
-    daily_records = [r for r in focus_records if r['date'] == current_date]
+    daily_records = [r for r in focus_records if record_date(r) == current_date]
     daily_sessions = len(daily_records)
-    daily_minutes = sum(r['duration'] for r in daily_records)
+    daily_minutes = round(sum(record_minutes(r) for r in daily_records))
 
     weekly_data = []
     for i in range(6, -1, -1):
         date = (datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d')
-        minutes = sum(r['duration'] for r in focus_records if r['date'] == date)
+        minutes = round(sum(record_minutes(r) for r in focus_records if record_date(r) == date))
         weekly_data.append({'day': ['M', 'T', 'W', 'T', 'F', 'S', 'S'][(datetime.now() - timedelta(days=i)).weekday()], 'value': minutes})
 
-    monthly_records = [r for r in focus_records if r['date'].startswith(current_month)]
+    monthly_records = [r for r in focus_records if record_date(r).startswith(current_month)]
     monthly_sessions = len(monthly_records)
-    monthly_minutes = sum(r['duration'] for r in monthly_records)
+    monthly_minutes = round(sum(record_minutes(r) for r in monthly_records))
 
     days_in_month = (datetime.now().replace(day=1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
     daily_data = []
     for day in range(1, days_in_month.day + 1):
         date = f"{current_month}-{day:02d}"
-        minutes = sum(r['duration'] for r in focus_records if r['date'] == date)
+        minutes = round(sum(record_minutes(r) for r in focus_records if record_date(r) == date))
         daily_data.append({'day': str(day), 'value': minutes})
 
-    yearly_records = [r for r in focus_records if r['date'].startswith(current_year)]
+    yearly_records = [r for r in focus_records if record_date(r).startswith(current_year)]
     yearly_sessions = len(yearly_records)
-    yearly_minutes = sum(r['duration'] for r in yearly_records)
+    yearly_minutes = round(sum(record_minutes(r) for r in yearly_records))
 
     monthly_data = []
     for month in range(1, 13):
         month_str = f"{current_year}-{month:02d}"
-        minutes = sum(r['duration'] for r in focus_records if r['date'].startswith(month_str))
+        minutes = round(sum(record_minutes(r) for r in focus_records if record_date(r).startswith(month_str)))
         monthly_data.append({'day': monthNames[month - 1][0], 'value': minutes})
 
     return jsonify({

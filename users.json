@@ -1,0 +1,53 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "Kiraru",
+            "password_hash": "scrypt:32768:8:1$naMMApVkbDOyOZs3$f4a63f44498cbc5f58775ee55b23deda2c2090acb78259d0d76a58427fc0ece1140091d44f0591c13bee1dc8246b907ddea0c93a5727fdbe191eda85f57b2e40",
+            "email": "Kiraru@magicmeow.com",
+            "avatar": null,
+            "settings": {
+                "theme": "light",
+                "notifications": true,
+                "language": "en",
+                "time_personality": "task-oriented"
+            },
+            "focus_records": [],
+            "mood_records": [],
+            "plans": [
+                {
+                    "id": "5049aec1-c1e9-4c51-ae96-2aaed93fe171",
+                    "plan_name": "Smth",
+                    "folder": "Default",
+                    "notes": "sadasd",
+                    "date_start": "2026-06-03",
+                    "date_end": "2026-06-13",
+                    "time_start": "00:30",
+                    "time_end": "06:00",
+                    "repeat": null,
+                    "reminder": {
+                        "enabled": true,
+                        "forced": true,
+                        "time": {
+                            "value": 8.5,
+                            "unit": "hours"
+                        }
+                    },
+                    "quadrant": "top-right",
+                    "completed": false,
+                    "created_at": "2026-06-04T15:07:01"
+                }
+            ],
+            "folders": [
+                {
+                    "id": 1,
+                    "name": "UI/UX"
+                },
+                {
+                    "id": 2,
+                    "name": "Default"
+                }
+            ]
+        }
+    ]
+}

@@ -321,6 +321,7 @@ body {
     scrollbar-width: none;
     -ms-overflow-style: none;
     width: 100%;
+    padding: 0 2.5rem;
 }
 
 #daily-content::-webkit-scrollbar,
@@ -1170,6 +1171,12 @@ body {
     .main-content {
         padding-left: 6.5rem;
         padding-right: 1rem;
+    }
+
+    #daily-content,
+    #monthly-content,
+    #all-content {
+        padding: 0 0.5rem;
     }
 
     .tabs-switcher {
