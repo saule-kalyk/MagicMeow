@@ -414,6 +414,13 @@ body {
     max-width: 75rem;
     height: 36.25rem;
     display: none;
+    overflow: hidden;
+}
+
+.chatbot.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .Block__Messages {
@@ -422,7 +429,7 @@ body {
     padding: 1.25rem;
     overflow-y: scroll;
     max-height: 34.375rem;
-    margin-top: 2.5rem;
+    margin-top: auto;
 }
 
 .Message__Element {
