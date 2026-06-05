@@ -34,8 +34,30 @@
                         }
                     },
                     "quadrant": "top-right",
-                    "completed": false,
+                    "completed": true,
                     "created_at": "2026-06-04T15:07:01"
+                },
+                {
+                    "id": "94ebcc4a-c762-4839-9a58-0548cd9713fb",
+                    "plan_name": "Smth2",
+                    "folder": "Default",
+                    "notes": "asasd",
+                    "date_start": "2026-06-04",
+                    "date_end": "2026-06-21",
+                    "time_start": null,
+                    "time_end": null,
+                    "repeat": null,
+                    "reminder": {
+                        "enabled": true,
+                        "forced": false,
+                        "time": {
+                            "value": 1,
+                            "unit": "days"
+                        }
+                    },
+                    "quadrant": "bottom-right",
+                    "completed": true,
+                    "created_at": "2026-06-05T08:35:30"
                 }
             ],
             "folders": [

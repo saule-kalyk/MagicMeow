@@ -230,7 +230,7 @@ body {
     align-items: center;
     gap: 5px;
     position: relative;
-  
+    top: -5px;
 }
 
 .tab img {
@@ -502,7 +502,6 @@ body {
     display: flex;
     align-items: center;
     padding: 5px;
-    border: 1px solid #d9786f;
     border-radius: 5px;
     cursor: pointer;
 }

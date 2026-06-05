@@ -457,6 +457,18 @@ document.addEventListener("DOMContentLoaded", function () {
     let repeatCount = 0;
     let repeatDays = [];
 
+    document.getElementById("confirmRepeatBtn").addEventListener("click", () => {
+        document.querySelector(".repeat-container").style.display = "none";
+
+        if (illustration) {
+            illustration.style.display = "block";
+        }
+
+        currentOpenPanel = null;
+
+        alert("Repeat settings saved!");
+   });
+
     document.querySelectorAll('.repeat-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             if (selectedStart && selectedEnd && !selectedStart.isSame(selectedEnd, 'day')) {
