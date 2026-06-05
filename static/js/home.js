@@ -29,67 +29,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error('Error fetching user info:', error);
     }
 
-    // 自动加载最近的聊天会话
+    // При загрузке страницы всегда показываем welcome box
     async function loadLatestSession() {
-        // Check if we should show the welcome screen
-        if (!localStorage.getItem('chatSessionId')) {
-            chatBox.style.display = "block";
-            chatBot.style.display = "none";
-            threebtn.style.display = "none";
-            Block__Messages.innerHTML = '';
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/current_session', {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await response.json();
-            if (data.messages && data.messages.length > 0) {
-                Block__Messages.innerHTML = '';
-                data.messages.forEach(msg => {
-                    const messageClass = msg.role === 'user' ? 'User' : 'Bot';
-                    const imgSrc = msg.role === 'user' ? userAvatar : '/static/images/bunny.png';
-                    const messageElement = `
-                        <div class="Message__Element ${messageClass}">
-                            ${msg.role === 'user' ? `
-                                <div class="Message">${msg.content}</div>
-                                <img src="${imgSrc}" alt="" style="height: 50px; border-radius: 50%; border: 3px solid black; object-fit: cover; margin-left: 5px;">
-                            ` : `
-                                <img src="${imgSrc}" alt="" style="height: 50px;">
-                                <div class="Message">${msg.content}</div>
-                            `}
-                        </div>
-                    `;
-                    Block__Messages.innerHTML += messageElement;
-                });
-                chatBox.style.display = "none";
-                threebtn.style.display = "flex";
-                chatBot.style.display = "block";
-                Block__Messages.scrollTop = Block__Messages.scrollHeight;
-            } else {
-                // Fallback to latest session from history
-                const historyResponse = await fetch('/api/chat_history', {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const historyData = await historyResponse.json();
-                if (historyData.sessions && historyData.sessions.length > 0) {
-                    const latestSession = historyData.sessions[0];
-                    await loadSessionMessages(latestSession.session_id);
-                } else {
-                    chatBox.style.display = "block";
-                    chatBot.style.display = "none";
-                    threebtn.style.display = "none";
-                }
-            }
-        } catch (error) {
-            console.error('Error loading latest session:', error);
-            chatBox.style.display = "block";
-            chatBot.style.display = "none";
-            threebtn.style.display = "none";
-        }
+        chatBox.style.display = "block";
+        chatBot.style.display = "none";
+        threebtn.style.display = "none";
+        Block__Messages.innerHTML = '';
     }
 
     // 调用自动加载
@@ -263,7 +208,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
             chatBox.style.display = "none";
             threebtn.style.display = "flex";
-            chatBot.style.display = "block";
+            chatBot.style.display = "flex";
             Block__Messages.scrollTop = Block__Messages.scrollHeight;
 
             // 设置当前会话
@@ -281,7 +226,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (chatBox && chatBox.style.display !== "none") {
             chatBox.style.display = "none";
             threebtn.style.display = "flex";
-            chatBot.style.display = "block";
+            chatBot.style.display = "flex";
         }
 
         const value = Input.value.trim();
