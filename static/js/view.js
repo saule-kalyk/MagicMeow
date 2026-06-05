@@ -417,14 +417,30 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function addPlanToDay(plan) {
-        const { date_start, plan_name, time_start, time_end, quadrant, id, completed } = plan;
+        const {
+            date_start,
+            date_end,
+            plan_name,
+            time_start,
+            time_end,
+            quadrant,
+            id,
+            completed
+        } = plan;
+
         if (!date_start) return;
 
-        const planDate = new Date(date_start);
         const cur = new Date(currentDay);
         cur.setHours(0, 0, 0, 0);
 
-        if (planDate.toDateString() !== cur.toDateString()) return;
+        const startDate = new Date(date_start);
+        startDate.setHours(0, 0, 0, 0);
+
+        const endDate = date_end ? new Date(date_end) : new Date(date_start);
+        endDate.setHours(23, 59, 59, 999);
+
+        if (cur < startDate || cur > endDate) return;
+
         if (!time_start || !time_end) return;
 
         const [sh, sm] = time_start.split(':').map(Number);

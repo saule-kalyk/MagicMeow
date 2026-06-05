@@ -222,14 +222,26 @@ document.addEventListener("DOMContentLoaded", function () {
             yAxisContainer.appendChild(mark);
         }
 
-        if (!data || data.length === 0) {
-            const weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-            data = weekdays.map(day => ({ day, value: 0 }));
+        // Определяем метки в зависимости от вкладки
+        let defaultLabels;
+        if (tab === 'daily') {
+            defaultLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+        } else if (tab === 'monthly') {
+            // дни месяца — берём реальное кол-во дней текущего месяца
+            const now = new Date();
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            defaultLabels = Array.from({ length: daysInMonth }, (_, i) => String(i + 1));
+        } else {
+            // all — месяцы года
+            defaultLabels = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
         }
 
-        const weekdays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-        const orderedData = weekdays.map((day, index) => {
-            const item = data.find(d => d.day === day) || { day, value: 0 };
+        if (!data || data.length === 0) {
+            data = defaultLabels.map(day => ({ day, value: 0 }));
+        }
+
+        const orderedData = defaultLabels.map(label => {
+            const item = data.find(d => d.day === label) || { day: label, value: 0 };
             return item;
         });
 

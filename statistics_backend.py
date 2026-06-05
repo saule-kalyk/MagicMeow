@@ -88,12 +88,22 @@ def get_plan_stats():
     current_date = datetime.now().strftime('%Y-%m-%d')
     current_month = datetime.now().strftime('%Y-%m')
     current_year = datetime.now().strftime('%Y')
-    print(f"Current year: {current_year}")  # Debug: Log current year
 
-    daily_plans = [p for p in plans if plan_date(p) == current_date]
-    monthly_plans = [p for p in plans if plan_date(p).startswith(current_month)]
-    all_plans = [p for p in plans if plan_date(p).startswith(current_year)]
-    print(f"All plans (yearly): {all_plans}")  # Debug: Log yearly plans
+    def plan_is_active_on(plan, date_str):
+        """Проверяем что план активен на указанную дату (учитываем диапазон)."""
+        start = plan.get('date_start') or plan.get('date') or ''
+        end = plan.get('date_end') or start
+        if not start:
+            return False
+        return start <= date_str <= end
+
+    daily_plans = [p for p in plans if plan_is_active_on(p, current_date)]
+    monthly_plans = [p for p in plans if
+                     (p.get('date_start') or p.get('date') or '') <= current_month + '-31' and
+                     (p.get('date_end') or p.get('date_start') or '') >= current_month + '-01']
+    all_plans = [p for p in plans if
+                 (p.get('date_start') or p.get('date') or '').startswith(current_year) or
+                 (p.get('date_end') or '').startswith(current_year)]
 
     def calculate_stats(plans):
         stats = {'Red': {'completed': 0, 'total': 0}, 'Blue': {'completed': 0, 'total': 0}, 'Yellow': {'completed': 0, 'total': 0}, 'Green': {'completed': 0, 'total': 0}}
