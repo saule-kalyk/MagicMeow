@@ -13,7 +13,12 @@
                 "time_personality": "task-oriented"
             },
             "focus_records": [],
-            "mood_records": [],
+            "mood_records": [
+                {
+                    "date": "2026-06-05",
+                    "mood": 3
+                }
+            ],
             "plans": [
                 {
                     "id": "5049aec1-c1e9-4c51-ae96-2aaed93fe171",
