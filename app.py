@@ -306,15 +306,19 @@ def profile():
         return redirect(url_for('login'))
     return render_template('profile.html', user=user)
 
-@app.route('/viewMonthly')
-def view_monthly():
+@app.route('/view')
+def view():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     user = next((u for u in read_users() if u['id'] == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
-    return render_template('viewMonthly.html', user=user)
+    return render_template('view.html', user=user)
+
+@app.route('/viewMonthly')
+def view_monthly():
+    return redirect('/view?tab=monthly')
 
 @app.route('/viewMonthly/folder')
 def folder_page():
@@ -328,23 +332,11 @@ def folder_page():
 
 @app.route('/viewWeekly')
 def view_weekly():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
-    if not user:
-        flash('User not found.', 'error')
-        return redirect(url_for('login'))
-    return render_template('viewWeekly.html', user=user)
+    return redirect('/view?tab=weekly')
 
 @app.route('/viewDaily')
 def view_daily():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
-    if not user:
-        flash('User not found.', 'error')
-        return redirect(url_for('login'))
-    return render_template('viewDaily.html', user=user)
+    return redirect('/view?tab=daily')
 
 @app.route('/focus')
 def focus():
@@ -417,16 +409,13 @@ def logout():
 # 创建新会话
 @app.route('/api/chat/new', methods=['POST'])
 def create_new_chat_session():
-    data = request.json
-    user_id = data.get('user_id')
+    user_id = session.get('user_id')
     if not user_id:
         return jsonify({'error': 'User ID required'}), 400
 
-    # Generate new session ID
     session_id = f"{user_id}_{datetime.now().strftime('%Y%m%d%H%M%S')}"
     session['chat_session_id'] = session_id
 
-    # Unset is_current for all other sessions
     with sqlite3.connect(CHAT_DB) as conn:
         conn.execute('UPDATE history SET is_current = 0 WHERE user_id = ?', (user_id,))
         conn.commit()
