@@ -1033,6 +1033,12 @@ body {
     background: #cc0000;
 }
 
+/* При открытом сайдбаре уменьшаем gap между барами */
+.sidebar.open ~ .sidebar-controls ~ .main-content .bars,
+.sidebar.open ~ .sidebar-controls ~ .main-content .bars-daily {
+    gap: 0.75rem;
+}
+
 /* ================================================================
    RESPONSIVE
    Breakpoints: 1280px (ноутбук), 1024px (планшет), 768px (мобильный)
