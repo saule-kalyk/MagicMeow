@@ -575,7 +575,7 @@ body {
 .add-focus-btn {
     display: flex;
     background: none;
-    width: 18.75rem;
+    width: fit-content;
     border: 0.125rem solid black;
     padding: 0.625rem 1.25rem;
     font-family: 'Jua', sans-serif;
