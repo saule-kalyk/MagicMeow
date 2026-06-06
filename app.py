@@ -14,6 +14,7 @@ import uuid
 import logging
 from chat_api import handle_chat_message
 from statistics_backend import statistics_bp
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 # 设置日志
 logging.basicConfig(level=logging.DEBUG)
@@ -25,6 +26,9 @@ app = Flask(__name__)
 app.static_folder = 'static'
 app.template_folder = 'templates'
 app.secret_key = os.getenv('SECRET_KEY')
+
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+
 app.register_blueprint(statistics_bp)
 
 # 持久化数据目录 (Railway volume on prod, local folder on dev)
@@ -165,6 +169,7 @@ def login():
 @app.route('/auth/google')
 def google_login():
     redirect_uri = url_for('google_callback', _external=True)
+    print(f"REDIRECT URI: {redirect_uri}", flush=True)
     return google.authorize_redirect(redirect_uri)
 
 # Google 回调路由
