@@ -25,6 +25,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (data.avatar) {
             userAvatar = data.avatar;
         }
+        if (data.days) {
+            const daysEl = document.getElementById('days');
+            if (daysEl) daysEl.textContent = `day ${data.days}`;
+        }
     } catch (error) {
         console.error('Error fetching user info:', error);
     }
@@ -47,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const response = await fetch('/api/chat/new', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: '{{ session["user_id"] }}' })
+                body: JSON.stringify({ })
             });
             const data = await response.json();
             if (!data.session_id) {
