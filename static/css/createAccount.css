@@ -9,6 +9,7 @@ body {
     font-size: 14px;
     font-weight: 400;
 }
+
 .container {
     display: flex;
     width: 1680px;
@@ -18,7 +19,7 @@ body {
     justify-content: center;
 }
 
-.signup-box{
+.signup-box {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -26,6 +27,7 @@ body {
     align-items: center;
     text-align: center;
 }
+
 .image-box {
     flex: 1;
     display: flex;
@@ -33,6 +35,7 @@ body {
     align-items: center;
     background: #ffffff;
 }
+
 .logo {
     display: flex;
     align-items: flex-end;
@@ -41,8 +44,8 @@ body {
     color: #CEB3FF;
     margin-bottom: 30px;
     margin-top: -80px;
-
 }
+
 .logo img {
     width: 100px;
     height: auto;
@@ -50,6 +53,7 @@ body {
     position: relative;
     bottom: -15px;
 }
+
 .form-box {
     width: 90%;
     max-width: 350px;
@@ -58,22 +62,22 @@ body {
     border-radius: 10px;
     padding: 30px;
     text-align: center;
-  }
+}
 
-  .form-box h1 {
+.form-box h1 {
     color: #C7B7F5;
     margin-bottom: 10px;
     font-size: 35px;
     font-weight: lighter;
     margin-top: 0;
-  }
+}
 
-  .form-box h2 {
+.form-box h2 {
     font-size: 20px;
     margin-bottom: 20px;
-  }
+}
 
-  .form-box input {
+.form-box input {
     width: 80%;
     height: 35px;
     padding: 12px;
@@ -82,61 +86,75 @@ body {
     border-radius: 10px;
     font-size: 20px;
     font-family: 'Jua', sans-serif;
-  }
-  /* men osy zherde popup zhazadym, */
-  .tooltip {
+}
+
+.password-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 80%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.tooltip {
     display: none;
     position: absolute;
-    left: 400px;
-    margin-top: -12px;
-    width: 200px;
-    padding: 2px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(100% + 2px);
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 10px;
     background: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     border: 2px solid #444;
-    font-size: 10px;
-    z-index: 10;
-  }
+    font-size: 12px;
+    z-index: 100;
+}
 
-  .tooltip ul {
-    padding-left: 3px;
-  }
+.tooltip ul {
+    padding-left: 0;
+    margin: 0;
+}
 
-  .tooltip li {
+.tooltip li {
     margin-bottom: 6px;
-    text-align: start;
+    text-align: left;
     list-style: none;
     position: relative;
     padding-left: 20px;
-  }
+}
 
-  .tooltip li::before {
+.tooltip li::before {
     content: '';
     position: absolute;
     left: 0;
-    top: 2px;
+    top: 4px;
     width: 10px;
     height: 10px;
-    background-color: #f88;
+    background-color: var(--before-bg, #f88);
     border-radius: 50%;
-  }
+}
 
- .form-box button {
+.form-box button {
     width: 87%;
     padding: 15px;
     background-color: #333;
     color: white;
     border: none;
     border-radius: 10px;
-    font-size: 18px;
-    margin-top: 30px;
     cursor: pointer;
     font-family: 'Jua', sans-serif;
     font-size: 24px;
-  }
+    margin-top: 30px;
+}
 
+.form-box button:hover {
+    background-color: #444;
+}
 
 .separator {
     width: 2px;
@@ -148,4 +166,11 @@ body {
 .image-box img {
     width: 80%;
     max-width: 886px;
+}
+
+.error {
+    color: #CEB3FF;
+    font-size: 16px;
+    margin-top: 10px;
+    font-family: 'Jua', sans-serif;
 }

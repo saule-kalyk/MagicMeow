@@ -315,6 +315,11 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             const data = await response.json();
             if (data.avatar) userAvatar = data.avatar;
+            
+            if (data.days) {
+                const daysEl = document.getElementById('days');
+                if (daysEl) daysEl.textContent = `day ${data.days}`;
+            }
         } catch (error) {
             console.error('Error fetching user info:', error);
         }

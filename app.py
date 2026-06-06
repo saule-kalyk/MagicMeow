@@ -216,6 +216,7 @@ def create_account():
             'password_hash': generate_password_hash(password),
             'email': email or f'{username}@magicmeow.com',
             'avatar': None,
+            'created_at': datetime.now().strftime('%Y-%m-%d'),
             'settings': {
                 'theme': 'light',
                 'notifications': True,
@@ -669,8 +670,20 @@ def user_info():
     user = next((u for u in read_users() if u['id'] == session['user_id']), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
+
+    # Считаем количество дней с регистрации
+    days_count = 1
+    created_at = user.get('created_at')
+    if created_at:
+        try:
+            created_date = datetime.strptime(created_at[:10], '%Y-%m-%d').date()
+            days_count = (datetime.now().date() - created_date).days + 1
+        except Exception:
+            days_count = 1
+
     return jsonify({
         'avatar': user.get('avatar') or '/static/images/user.png',
+        'days': days_count,
         'settings': user.get('settings', {
             'theme': 'light',
             'notifications': True,

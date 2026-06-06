@@ -539,10 +539,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function fetchUserInfo() {
         try {
-            const res = await fetch('/api/user_info', { headers: { 'Content-Type': 'application/json' } });
-            const data = await res.json();
+            const response = await fetch('/api/user_info', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
             if (data.avatar) userAvatar = data.avatar;
-        } catch (e) { console.error('Error fetching user info:', e); }
+        
+            if (data.days) {
+                const daysEl = document.getElementById('days');
+                if (daysEl) daysEl.textContent = `day ${data.days}`;
+            }
+        } catch (error) {
+        console.error('Error fetching user info:', error);
+        }
     }
 
     async function fetchCurrentSession() {

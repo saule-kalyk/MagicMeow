@@ -1,18 +1,28 @@
 // Sidebar toggle
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const sidebar = document.querySelector(".sidebar");
     const toggleBtn = document.querySelector(".toggle-btn");
     const plusIcon = document.querySelector(".plus-icon");
 
     toggleBtn.addEventListener("click", function () {
         sidebar.classList.toggle("open");
-
-        if (sidebar.classList.contains("open")) {
-            plusIcon.style.display = "none";
-        } else {
-            plusIcon.style.display = "block";
-        }
+        plusIcon.style.display = sidebar.classList.contains("open") ? "none" : "block";
     });
+
+    // Days counter
+    try {
+        const response = await fetch('/api/user_info', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        if (data.days) {
+            const daysEl = document.getElementById('days');
+            if (daysEl) daysEl.textContent = `day ${data.days}`;
+        }
+    } catch (error) {
+        console.error('Error fetching user info:', error);
+    }
 });
 
 // Handle avatar upload
@@ -36,7 +46,6 @@ document.getElementById('avatar-upload').addEventListener('change', function(eve
             uploadBtn.textContent = 'Upload New Avatar';
 
             if (data.success) {
-                // Update the avatar image on the page
                 document.querySelector('.profile-avatar').src = data.avatar_url;
                 document.querySelector('.sidebar .avatar').src = data.avatar_url;
                 alert('Avatar updated successfully!');
@@ -67,9 +76,7 @@ function changeUsername() {
 
     fetch('/update_username', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: newUsername })
     })
     .then(response => response.json())
@@ -78,7 +85,6 @@ function changeUsername() {
         changeBtn.textContent = 'Change';
 
         if (data.success) {
-            // Update the username on the page
             document.querySelector('.sidebar .user').textContent = newUsername;
             document.getElementById('username-input').value = newUsername;
             alert('Username updated successfully!');
