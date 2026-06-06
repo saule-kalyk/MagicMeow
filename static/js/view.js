@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ── ОБЩИЕ ДАННЫЕ ──
     const monthNames = [
-        "January","February","March","April","May","June",
-        "July","August","September","October","November","December"
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
     ];
 
     // ── MONTHLY ──
@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const tabs = document.querySelectorAll(".tab");
     const panels = {
         monthly: document.getElementById("view-monthly"),
-        weekly:  document.getElementById("view-weekly"),
-        daily:   document.getElementById("view-daily"),
+        weekly: document.getElementById("view-weekly"),
+        daily: document.getElementById("view-daily"),
     };
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -56,8 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Инициализируем логику нужной вкладки
         if (tabName === "monthly") initMonthly();
-        if (tabName === "weekly")  initWeekly();
-        if (tabName === "daily")   initDaily();
+        if (tabName === "weekly") initWeekly();
+        if (tabName === "daily") initDaily();
     }
 
     tabs.forEach(tab => {
@@ -109,8 +109,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 const elapsed = (now - startDT) / (1000 * 60);
                 timeProgressBar.style.width = `${Math.min((elapsed / total) * 100, 100)}%`;
                 const diff = endDT - now;
-                const h = Math.floor(diff / (1000*60*60));
-                const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+                const h = Math.floor(diff / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 timeLeftEl.textContent = `${h}h ${m}m`;
             } else if (endDT <= now) {
                 timeProgressBar.style.width = "100%";
@@ -136,8 +136,8 @@ document.addEventListener("DOMContentLoaded", function () {
             repeatEl.style.display = "flex";
             weekText.textContent = `${plan.repeat.type.charAt(0).toUpperCase() + plan.repeat.type.slice(1)} (${plan.repeat.count} times)`;
             if (plan.repeat.days?.length > 0) {
-                const dayNames = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-                daysText.textContent = plan.repeat.days.map(d => dayNames[d-1]).join(" and ");
+                const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+                daysText.textContent = plan.repeat.days.map(d => dayNames[d - 1]).join(" and ");
             } else {
                 daysText.textContent = "";
             }
@@ -151,9 +151,9 @@ document.addEventListener("DOMContentLoaded", function () {
         // Quadrant highlight
         const highlightOval = document.querySelector(".highlight-oval-plan");
         const quadrantMap = {
-            'top-left':     { top: '40px', left: '40px' },
-            'top-right':    { top: '40px', right: '40px' },
-            'bottom-left':  { bottom: '30px', left: '40px' },
+            'top-left': { top: '40px', left: '40px' },
+            'top-right': { top: '40px', right: '40px' },
+            'bottom-left': { bottom: '30px', left: '40px' },
             'bottom-right': { bottom: '30px', right: '40px' }
         };
         const colorMap = {
@@ -460,11 +460,11 @@ document.addEventListener("DOMContentLoaded", function () {
             if (h === Math.floor(startTime) && h === Math.floor(endTime)) {
                 timeSpan.textContent = `${time_start} - ${time_end}`;
             } else if (h === Math.floor(startTime)) {
-                timeSpan.textContent = `${time_start} - ${String(h+1).padStart(2,'0')}:00`;
+                timeSpan.textContent = `${time_start} - ${String(h + 1).padStart(2, '0')}:00`;
             } else if (h === Math.floor(endTime)) {
-                timeSpan.textContent = `${String(h).padStart(2,'0')}:00 - ${time_end}`;
+                timeSpan.textContent = `${String(h).padStart(2, '0')}:00 - ${time_end}`;
             } else {
-                timeSpan.textContent = `${String(h).padStart(2,'0')}:00 - ${String(h+1).padStart(2,'0')}:00`;
+                timeSpan.textContent = `${String(h).padStart(2, '0')}:00 - ${String(h + 1).padStart(2, '0')}:00`;
             }
             el.appendChild(timeSpan);
             slot.appendChild(el);
@@ -482,10 +482,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.classList.add("complete-checkbox");
-        checkbox.checked = completed || false;
+        const todayStr = formatDate(new Date());
+        const completedDates = plan.completed_dates || [];
+        checkbox.checked = completedDates.includes(todayStr);
         checkbox.dataset.planId = id;
         checkbox.addEventListener("change", async (e) => {
-            await updatePlanCompletion(e.target.dataset.planId, e.target.checked);
+            await updatePlanCompletion(e.target.dataset.planId, e.target.checked, plan);
         });
 
         const name = document.createElement("div");
@@ -501,16 +503,24 @@ document.addEventListener("DOMContentLoaded", function () {
         return el;
     }
 
-    async function updatePlanCompletion(planId, completed) {
+    async function updatePlanCompletion(planId, checked, plan) {
         try {
+            const todayStr = formatDate(new Date());
+            let completedDates = plan.completed_dates || [];
+
+            if (checked) {
+                if (!completedDates.includes(todayStr)) completedDates.push(todayStr);
+            } else {
+                completedDates = completedDates.filter(d => d !== todayStr);
+            }
+
             const res = await fetch('/api/edit_plan', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ plan_id: planId, completed })
+                body: JSON.stringify({ plan_id: planId, completed_dates: completedDates })
             });
             const result = await res.json();
-            if (res.ok && result.success) switchTab(activeTab);
-            else alert(result.error || "Failed to update plan.");
+            if (!res.ok) alert(result.error || "Failed to update plan.");
         } catch (e) {
             alert("Error: " + e.message);
         }
@@ -518,7 +528,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ── HELPERS ──
     function formatDate(date) {
-        return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     }
 
     function isToday(date) {
@@ -545,13 +555,13 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             const data = await response.json();
             if (data.avatar) userAvatar = data.avatar;
-        
+
             if (data.days) {
                 const daysEl = document.getElementById('days');
                 if (daysEl) daysEl.textContent = `day ${data.days}`;
             }
         } catch (error) {
-        console.error('Error fetching user info:', error);
+            console.error('Error fetching user info:', error);
         }
     }
 
@@ -661,12 +671,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const byDate = {};
             data.sessions.forEach(s => {
                 const ts = s.latest_update || s.timestamp;
-                const key = new Date(ts).toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+                const key = new Date(ts).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                 if (!byDate[key]) byDate[key] = [];
                 byDate[key].push({ ...s, latest_update: ts });
             });
 
-            Object.keys(byDate).sort((a,b) => new Date(b)-new Date(a)).forEach(dateKey => {
+            Object.keys(byDate).sort((a, b) => new Date(b) - new Date(a)).forEach(dateKey => {
                 const header = document.createElement('div');
                 header.className = 'date-header';
                 header.innerHTML = `<p style="font-weight:bold;margin:10px 0 5px;">${dateKey}</p>`;
@@ -675,7 +685,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 byDate[dateKey].forEach(s => {
                     const el = document.createElement('div');
                     el.className = 'chat-session';
-                    const time = new Date(s.latest_update).toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+                    const time = new Date(s.latest_update).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                     const cur = s.is_current ? ' (Current)' : '';
                     el.innerHTML = `
                         <p style="display:inline-block;width:calc(100% - 80px);cursor:pointer;">

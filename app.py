@@ -931,7 +931,8 @@ def edit_plan():
                 'repeat': data.get('repeat', plan['repeat']),
                 'reminder': data.get('reminder', plan['reminder']),
                 'quadrant': data.get('quadrant', plan['quadrant']),
-                'completed': data.get('completed', plan['completed'])
+                'completed': data.get('completed', plan.get('completed', False)),
+                'completed_dates': data.get('completed_dates', plan.get('completed_dates', []))
             })
             break
     write_users(users)
