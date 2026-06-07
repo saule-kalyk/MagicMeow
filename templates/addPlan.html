@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.7/dayjs.min.js"></script>
     <title>Add Plan</title>
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
             <div class="sidebar-content">
                 <div class="user-info">
                     <a href="/profile">
-                        <img src="{{ user.avatar if user.avatar else url_for('static', filename='images/user.png') }}" alt="User" class="avatar">
+                        <img src="{{ user.avatar if user.avatar else url_for('static', filename='images/user.png') }}"
+                            alt="User" class="avatar">
                     </a>
                     <div class="user-text">
                         <p class="sidebar-text user">{{ session['username'] }}</p>
@@ -49,7 +52,8 @@
                         <span class="sidebar-text">About Us</span>
                     </button>
                     <button class="add-plan" onclick="window.location.href='/addPlan';">
-                        <img src="{{ url_for('static', filename='images/addPlan.png') }}" alt="Add Plan" class="plus-icon" style="width: 50px;">
+                        <img src="{{ url_for('static', filename='images/addPlan.png') }}" alt="Add Plan"
+                            class="plus-icon" style="width: 50px;">
                         <span class="sidebar-text">Add Plan</span>
                     </button>
                 </div>
@@ -57,14 +61,15 @@
         </div>
 
         <div class="sidebar-controls">
-            <button class="toggle-btn"><img src="{{ url_for('static', filename='images/sidebar.png') }}" alt=""></button>
+            <button class="toggle-btn"><img src="{{ url_for('static', filename='images/sidebar.png') }}"
+                    alt=""></button>
         </div>
 
         <main class="main-content">
             <div class="popup-note">
                 <h3>Note</h3>
                 <p>This task won't <span class="highlight">repeat</span> anymore –<br>
-                   it's now scheduled only for the <br><span class="highlight">selected time period</span></p>
+                    it's now scheduled only for the <br><span class="highlight">selected time period</span></p>
             </div>
 
             <h2>ADD PLAN</h2>
@@ -77,10 +82,11 @@
                         <button class="folder-button">
                             <img src="{{ url_for('static', filename='images/icon-folder.png') }}" alt="">
                             <p id="selectedFolder">Select folder</p>
-                            <img src="{{ url_for('static', filename='images/icon-arrowbtn.png') }}" alt="" id="toggle-btn"
-                                style="width: 36px; height: 36px; margin-left:auto;">
+                            <img src="{{ url_for('static', filename='images/icon-arrowbtn.png') }}" alt=""
+                                id="toggle-btn" style="width: 36px; height: 36px; margin-left:auto;">
                         </button>
-                        <img src="{{ url_for('static', filename='images/icon-folder-extra.png') }}" alt="" class="extra-icon" id="createFolder">
+                        <img src="{{ url_for('static', filename='images/icon-folder-extra.png') }}" alt=""
+                            class="extra-icon" id="createFolder">
                     </div>
 
                     <div class="note">
@@ -100,15 +106,18 @@
                                 <span>Time</span>
                             </div>
                             <div class="config-item" id="repeat-btn">
-                                <img src="{{ url_for('static', filename='images/icon-repeat.png') }}" alt="" class="icon">
+                                <img src="{{ url_for('static', filename='images/icon-repeat.png') }}" alt=""
+                                    class="icon">
                                 <span>Repeat</span>
                             </div>
                             <div class="config-item" id="reminder-btn">
-                                <img src="{{ url_for('static', filename='images/icon-reminder.png') }}" alt="" class="icon">
+                                <img src="{{ url_for('static', filename='images/icon-reminder.png') }}" alt=""
+                                    class="icon">
                                 <span>Reminder</span>
                             </div>
                             <div class="config-item" id="quadrants-btn">
-                                <img src="{{ url_for('static', filename='images/icon-quadrants.png') }}" alt="" class="icon">
+                                <img src="{{ url_for('static', filename='images/icon-quadrants.png') }}" alt=""
+                                    class="icon">
                                 <span>Four Quadrants</span>
                             </div>
                         </div>
@@ -142,11 +151,13 @@
                     style="width: 40px; height:40px; position:absolute; top:10px; right:14px; cursor: pointer;">
                 <hr class="dashed-line">
                 <button class="folder-button selection" style="margin-bottom: 20px; width:530px;" data-folder="UI/UX">
-                    <img src="{{ url_for('static', filename='images/icon-folder.png') }}" alt="" style="width: 60px; height:60px;">
+                    <img src="{{ url_for('static', filename='images/icon-folder.png') }}" alt=""
+                        style="width: 60px; height:60px;">
                     <p>UI/UX</p>
                 </button>
                 <button class="folder-button selection" style="width:530px;" data-folder="Default">
-                    <img src="{{ url_for('static', filename='images/icon-folder.png') }}" alt="" style="width: 60px; height:60px;">
+                    <img src="{{ url_for('static', filename='images/icon-folder.png') }}" alt=""
+                        style="width: 60px; height:60px;">
                     <p style="text-align:left">Default</p>
                 </button>
             </div>
@@ -196,7 +207,8 @@
 
             <!-- reminder -->
             <div class="reminder">
-                <img src="{{ url_for('static', filename='images/arrow.png') }}" alt="" id="close-reminder-btn" class="back-arrow">
+                <img src="{{ url_for('static', filename='images/arrow.png') }}" alt="" id="close-reminder-btn"
+                    class="back-arrow">
                 <div class="switch-container">
                     <div class="label-container">
                         <img src="{{ url_for('static', filename='images/icon-reminder.png') }}" alt="" class="icon">
@@ -332,7 +344,8 @@
                     <img src="{{ url_for('static', filename='images/cat3.png') }}" alt="Cat" class="day-cat">
                     <div class="day-message">How many days do you want to continue this?</div>
                     <div class="day-control">
-                        <img src="{{ url_for('static', filename='images/triangle.png') }}" alt="arrow" class="day-arrow">
+                        <img src="{{ url_for('static', filename='images/triangle.png') }}" alt="arrow"
+                            class="day-arrow">
                         <input type="text" class="day-input" id="dayRepeatCount">
                         <span class="day-label">DAY</span>
                     </div>
@@ -341,7 +354,8 @@
                     <img src="{{ url_for('static', filename='images/cat3.png') }}" alt="Cat" class="week-cat">
                     <div class="week-message">How many weeks do you want to continue this?</div>
                     <div class="week-control">
-                        <img src="{{ url_for('static', filename='images/triangle.png') }}" alt="arrow" class="day-arrow">
+                        <img src="{{ url_for('static', filename='images/triangle.png') }}" alt="arrow"
+                            class="day-arrow">
                         <input type="text" class="day-input" id="weekRepeatCount">
                         <span class="day-label">WEEK</span>
                     </div>
@@ -359,7 +373,8 @@
                     <img src="{{ url_for('static', filename='images/cat3.png') }}" alt="Cat" class="month-cat">
                     <div class="month-message">Do you want to extend for a few more months (specific days)?</div>
                     <div class="month-control">
-                        <img src="{{ url_for('static', filename='images/triangle.png') }}" alt="arrow" class="day-arrow">
+                        <img src="{{ url_for('static', filename='images/triangle.png') }}" alt="arrow"
+                            class="day-arrow">
                         <input type="text" class="day-input" id="monthRepeatCount">
                         <span class="day-label">MONTH</span>
                     </div>
@@ -372,7 +387,13 @@
                         <table class="calendar-table-plan">
                             <thead>
                                 <tr>
-                                    <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+                                    <th>Mon</th>
+                                    <th>Tue</th>
+                                    <th>Wed</th>
+                                    <th>Thu</th>
+                                    <th>Fri</th>
+                                    <th>Sat</th>
+                                    <th>Sun</th>
                                 </tr>
                             </thead>
                             <tbody id="calendar-custom-body"></tbody>
@@ -386,7 +407,8 @@
             </div>
 
             <div class="plan-details">
-                <img class="back-arrow-plan" src="{{ url_for('static', filename='images/arrow.png') }}" alt="" id="close-plan-btn">
+                <img class="back-arrow-plan" src="{{ url_for('static', filename='images/arrow.png') }}" alt=""
+                    id="close-plan-btn">
                 <h2 class="status-text">Saved successfully!</h2>
                 <div class="plan-body">
                     <div class="left-column">
@@ -395,7 +417,8 @@
                             <span id="planNameDisplay"></span>
                         </div>
                         <div class="folder-select-plan">
-                            <img src="{{ url_for('static', filename='images/icon-folder.png') }}" alt="" style="height: 50px; width:auto;">
+                            <img src="{{ url_for('static', filename='images/icon-folder.png') }}" alt=""
+                                style="height: 50px; width:auto;">
                             <div class="folder-name-plan" id="folderNameDisplay"></div>
                         </div>
                         <div class="date-plan">
@@ -479,13 +502,16 @@
             </div>
             <div class="extra">
                 <button class="extra-btn" id="bunny"><img src="/static/images/bunny.png" alt=""></button>
-                <button class="extra-btn" id="discover" onclick="window.location.href='/discover';"><img src="/static/images/discover.png" alt=""></button>
+                <button class="extra-btn" id="discover" onclick="window.location.href='/discover';"><img
+                        src="/static/images/discover.png" alt=""></button>
             </div>
 
             <div class="reminder-panel" id="reminderPanel">
                 <div class="section">
                     <div class="section-title">Chat History</div>
-                    <button id="newChatBtn" style="font-family: 'Jua', sans-serif; font-size: 16px; padding: 8px; margin: 0 10px 10px; border: 2px solid black; border-radius: 10px; background: white; cursor: pointer;">Start New Chat</button>
+                    <button id="newChatBtn"
+                        style="font-family: 'Jua', sans-serif; font-size: 16px; padding: 8px; margin: 0 10px 10px; border: 2px solid black; border-radius: 10px; background: white; cursor: pointer;">Start
+                        New Chat</button>
                     <div class="chat-history" id="chatHistory"></div>
                 </div>
             </div>
@@ -498,14 +524,17 @@
                         </div>
                         <div class="message-box-input">
                             <input type="text" placeholder="..." class="Input" id="Input">
-                            <button class="send-btn" id="send-btn"><img src="/static/images/send.png" alt="Send" style="width: 60px;"></button>
+                            <button class="send-btn" id="send-btn"><img src="/static/images/send.png" alt="Send"
+                                    style="width: 60px;"></button>
                         </div>
                     </div>
                 </div>
                 <div class="buttons">
-                    <button><img src="/static/images/statistics.png" alt=""></button>
-                    <button><img src="/static/images/addPlan.png" alt=""></button>
-                    <button><img src="/static/images/goals.png" alt=""></button>
+                    <button onclick="window.location.href='/statistics'"><img src="/static/images/statistics.png"
+                            alt=""></button>
+                    <button onclick="window.location.href='/addPlan'"><img src="/static/images/addPlan.png"
+                            alt=""></button>
+
                 </div>
             </div>
         </div>
@@ -513,4 +542,5 @@
 
     <script src="{{ url_for('static', filename='js/addPlan.js') }}"></script>
 </body>
+
 </html>

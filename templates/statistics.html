@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +12,15 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Judson&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
             <div class="sidebar-content">
                 <div class="user-info">
                     <a href="/profile">
-                        <img src="{{ user.avatar if user.avatar else url_for('static', filename='images/user.png') }}" alt="User" class="avatar">
+                        <img src="{{ user.avatar if user.avatar else url_for('static', filename='images/user.png') }}"
+                            alt="User" class="avatar">
                     </a>
                     <div class="user-text">
                         <p class="sidebar-text user">{{ session['username'] }}</p>
@@ -66,7 +69,8 @@
             <header class="data-header">
                 <h1>DATA STATISTIC</h1>
             </header>
-            <hr class="dotted-divider"></hr>
+            <hr class="dotted-divider">
+            </hr>
 
             <div class="tabs-switcher">
                 <button class="tab-button" data-tab="daily-content">Daily</button>
@@ -118,7 +122,9 @@
 
                 <!-- Focus -->
                 <div class="focus-section">
-                    <div class="focus-text"><h2>DAILY FOCUS RECORD:</h2></div>
+                    <div class="focus-text">
+                        <h2>DAILY FOCUS RECORD:</h2>
+                    </div>
                     <div class="focus-record">
                         <div class="focus-container">
                             <div class="focus-left">
@@ -147,7 +153,9 @@
 
                 <!-- Mood -->
                 <div class="mood-section-daily">
-                    <div class="mood-text"><h2>DAILY MOOD CHECK:</h2></div>
+                    <div class="mood-text">
+                        <h2>DAILY MOOD CHECK:</h2>
+                    </div>
                     <div class="mood-chart-daily">
                         <div class="chart-area-daily">
                             <div class="bars-daily">
@@ -231,7 +239,9 @@
 
                 <!-- Focus -->
                 <div class="focus-section">
-                    <div class="focus-text"><h2>MONTHLY FOCUS RECORD:</h2></div>
+                    <div class="focus-text">
+                        <h2>MONTHLY FOCUS RECORD:</h2>
+                    </div>
                     <div class="focus-record">
                         <div class="focus-container">
                             <div class="focus-left">
@@ -260,7 +270,9 @@
 
                 <!-- Mood -->
                 <div class="mood-section">
-                    <div class="mood-text"><h2>MOOD INDEX FOR EACH MONTH:</h2></div>
+                    <div class="mood-text">
+                        <h2>MOOD INDEX FOR EACH MONTH:</h2>
+                    </div>
                     <div class="mood-chart">
                         <div class="chart-area">
                             <div class="bars">
@@ -349,7 +361,9 @@
 
                 <!-- Focus -->
                 <div class="focus-section">
-                    <div class="focus-text"><h2>FOCUS RECORD:</h2></div>
+                    <div class="focus-text">
+                        <h2>FOCUS RECORD:</h2>
+                    </div>
                     <div class="focus-record">
                         <div class="focus-container">
                             <div class="focus-left">
@@ -378,7 +392,9 @@
 
                 <!-- Mood -->
                 <div class="mood-section">
-                    <div class="mood-text"><h2>MOOD INDEX:</h2></div>
+                    <div class="mood-text">
+                        <h2>MOOD INDEX:</h2>
+                    </div>
                     <div class="mood-chart">
                         <div class="chart-area">
                             <div class="bars">
@@ -432,13 +448,16 @@
             </div>
             <div class="extra">
                 <button class="extra-btn" id="bunny"><img src="/static/images/bunny.png" alt=""></button>
-                <button class="extra-btn" id="discover" onclick="window.location.href='/discover';"><img src="/static/images/discover.png" alt=""></button>
+                <button class="extra-btn" id="discover" onclick="window.location.href='/discover';"><img
+                        src="/static/images/discover.png" alt=""></button>
             </div>
 
             <div class="reminder-panel" id="reminderPanel">
                 <div class="section">
                     <div class="section-title">Chat History</div>
-                    <button id="newChatBtn" style="font-family: 'Jua', sans-serif; font-size: 16px; padding: 8px; margin: 0 10px 10px; border: 2px solid black; border-radius: 10px; background: white; cursor: pointer;">Start New Chat</button>
+                    <button id="newChatBtn"
+                        style="font-family: 'Jua', sans-serif; font-size: 16px; padding: 8px; margin: 0 10px 10px; border: 2px solid black; border-radius: 10px; background: white; cursor: pointer;">Start
+                        New Chat</button>
                     <div class="chat-history" id="chatHistory"></div>
                 </div>
             </div>
@@ -451,14 +470,16 @@
                         </div>
                         <div class="message-box-input">
                             <input type="text" placeholder="..." class="Input" id="Input">
-                            <button class="send-btn" id="send-btn"><img src="/static/images/send.png" alt="Send" style="width: 60px;"></button>
+                            <button class="send-btn" id="send-btn"><img src="/static/images/send.png" alt="Send"
+                                    style="width: 60px;"></button>
                         </div>
                     </div>
                 </div>
                 <div class="buttons">
-                    <button><img src="/static/images/statistics.png" alt=""></button>
-                    <button><img src="/static/images/addPlan.png" alt=""></button>
-                    <button><img src="/static/images/goals.png" alt=""></button>
+                    <button onclick="window.location.href='/statistics'"><img src="/static/images/statistics.png"
+                            alt=""></button>
+                    <button onclick="window.location.href='/addPlan'"><img src="/static/images/addPlan.png"
+                            alt=""></button>
                 </div>
             </div>
         </div>
@@ -466,4 +487,5 @@
 
     <script src="/static/js/statistics.js"></script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Judson&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
             <div class="sidebar-content">
                 <div class="user-info">
                     <a href="/profile">
-                        <img src="{{ user.avatar if user.avatar else url_for('static', filename='images/user.png') }}" alt="User" class="avatar">
+                        <img src="{{ user.avatar if user.avatar else url_for('static', filename='images/user.png') }}"
+                            alt="User" class="avatar">
                     </a>
                     <div class="user-text">
                         <p class="sidebar-text user">{{ session['username'] }}</p>
@@ -49,7 +52,8 @@
                         <span class="sidebar-text">About Us</span>
                     </button>
                     <button class="add-plan" onclick="window.location.href='/addPlan'">
-                        <img src="{{ url_for('static', filename='images/addPlan.png') }}" alt="Add Plan" class="plus-icon" style="width: 50px;">
+                        <img src="{{ url_for('static', filename='images/addPlan.png') }}" alt="Add Plan"
+                            class="plus-icon" style="width: 50px;">
                         <span class="sidebar-text">Add Plan</span>
                     </button>
                 </div>
@@ -57,7 +61,8 @@
         </div>
 
         <div class="sidebar-controls">
-            <button class="toggle-btn"><img src="{{ url_for('static', filename='images/sidebar.png') }}" alt=""></button>
+            <button class="toggle-btn"><img src="{{ url_for('static', filename='images/sidebar.png') }}"
+                    alt=""></button>
         </div>
         <main class="main-content">
             <img src="{{ url_for('static', filename='images/bg.png') }}" alt="" class="bg">
@@ -67,7 +72,8 @@
                 <img src="{{ url_for('static', filename='images/focus.png') }}" alt="">
             </div>
             <div class="records-popup" style="display: none;">
-                <button class="back-btn"><img src="{{ url_for('static', filename='images/arrow.png') }}" alt="" style="width: 60px;"></button>
+                <button class="back-btn"><img src="{{ url_for('static', filename='images/arrow.png') }}" alt=""
+                        style="width: 60px;"></button>
                 <div class="record">
                     <p>READING 30:00 MINUTES</p>
                     <div class="good-badge">
@@ -109,7 +115,8 @@
             </div>
 
             <div class="confirm-popup" id="confirmPopup">
-                <img src="{{ url_for('static', filename='images/read.png') }}" alt="" style="width: 70px; margin-top:-30px; margin-right: -370px;">
+                <img src="{{ url_for('static', filename='images/read.png') }}" alt=""
+                    style="width: 70px; margin-top:-30px; margin-right: -370px;">
                 <h2>Are you sure you want to end the focus?</h2>
                 <div class="confirm-popup-buttons">
                     <button class="confirm-finish" id="confirmFinishBtn">Finish</button>
@@ -125,13 +132,16 @@
             </div>
             <div class="extra">
                 <button class="extra-btn" id="bunny"><img src="/static/images/bunny.png" alt=""></button>
-                <button class="extra-btn" id="discover" onclick="window.location.href='/discover';"><img src="/static/images/discover.png" alt=""></button>
+                <button class="extra-btn" id="discover" onclick="window.location.href='/discover';"><img
+                        src="/static/images/discover.png" alt=""></button>
             </div>
 
             <div class="reminder-panel" id="reminderPanel">
                 <div class="section">
                     <div class="section-title">Chat History</div>
-                    <button id="newChatBtn" style="font-family: 'Jua', sans-serif; font-size: 16px; padding: 8px; margin: 0 10px 10px; border: 2px solid black; border-radius: 10px; background: white; cursor: pointer;">Start New Chat</button>
+                    <button id="newChatBtn"
+                        style="font-family: 'Jua', sans-serif; font-size: 16px; padding: 8px; margin: 0 10px 10px; border: 2px solid black; border-radius: 10px; background: white; cursor: pointer;">Start
+                        New Chat</button>
                     <div class="chat-history" id="chatHistory"></div>
                 </div>
             </div>
@@ -144,14 +154,16 @@
                         </div>
                         <div class="message-box-input">
                             <input type="text" placeholder="..." class="Input" id="Input">
-                            <button class="send-btn" id="send-btn"><img src="/static/images/send.png" alt="Send" style="width: 60px;"></button>
+                            <button class="send-btn" id="send-btn"><img src="/static/images/send.png" alt="Send"
+                                    style="width: 60px;"></button>
                         </div>
                     </div>
                 </div>
                 <div class="buttons">
-                    <button><img src="/static/images/statistics.png" alt=""></button>
-                    <button><img src="/static/images/addPlan.png" alt=""></button>
-                    <button><img src="/static/images/goals.png" alt=""></button>
+                    <button onclick="window.location.href='/statistics'"><img src="/static/images/statistics.png"
+                            alt=""></button>
+                    <button onclick="window.location.href='/addPlan'"><img src="/static/images/addPlan.png"
+                            alt=""></button>
                 </div>
             </div>
         </div>
@@ -159,4 +171,5 @@
 
     <script src="{{ url_for('static', filename='js/focus.js') }}"></script>
 </body>
+
 </html>
