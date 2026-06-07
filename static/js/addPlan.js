@@ -1107,4 +1107,13 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(e => console.error('Error loading plan for edit:', e));
     }
+    const bunnyTitle = urlParams.get('title');
+    if (bunnyTitle && !editPlanId) {
+        const planNameInput = document.getElementById("planName");
+        if (planNameInput) {
+            planNameInput.value = decodeURIComponent(bunnyTitle);
+            checkSaveButtonVisibility();
+            planNameInput.focus();
+        }
+    }
 });

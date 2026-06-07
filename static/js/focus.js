@@ -216,6 +216,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateTimerDisplay();
 
+    (function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const duration = parseInt(urlParams.get('duration'), 10);
+        const autostart = urlParams.get('autostart') === 'true';
+
+        if (duration && duration >= 1 && duration <= 180) {
+            timeLeft = duration * 60;
+            initialTime = duration * 60;
+            updateTimerDisplay();
+        }
+
+        if (autostart) {
+            // Небольшая задержка чтобы страница успела загрузиться
+            setTimeout(() => {
+                focusTitle.textContent = "Focusing...";
+                pauseBtn.style.display = "block";
+                addFocusBtn.style.display = "none";
+                startBtn.style.display = "none";
+                startTimer();
+            }, 500);
+        }
+    })();
+
     addFocusBtn.addEventListener("click", function () {
         timeInput.value = Math.round(timeLeft / 60);
         popupBox.classList.add("active");
@@ -315,7 +338,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             const data = await response.json();
             if (data.avatar) userAvatar = data.avatar;
-            
+
             if (data.days) {
                 const daysEl = document.getElementById('days');
                 if (daysEl) daysEl.textContent = `day ${data.days}`;
@@ -379,14 +402,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
             if (data.reply) {
                 appendMessage('assistant', data.reply);
-                if (data.reply.toLowerCase().includes('add plan')) {
-                    addPlanButton.style.backgroundColor = '#CEB3FF';
-                    setTimeout(() => {
-                        addPlanButton.style.backgroundColor = '';
-                        window.location.href = '/addPlan';
-                    }, 5000);
-                }
                 await loadChatHistory();
+                if (data.action) {
+                    setTimeout(() => handleBunnyAction(data.action, data.params || {}), 2000);
+                }
+
             } else {
                 appendMessage('assistant', 'Sorry, something went wrong!');
             }
@@ -529,4 +549,35 @@ document.addEventListener("DOMContentLoaded", function () {
     newChatBtn.addEventListener("click", startNewChat);
 
     fetchUserInfo().then(fetchCurrentSession);
+
+    function handleBunnyAction(action, params) {
+    switch (action) {
+        case 'statistics':
+            window.location.href = '/statistics';
+            break;
+
+        case 'view':
+            window.location.href = '/view';
+            break;
+ 
+        case 'add_plan': {
+            const title = params.title ? encodeURIComponent(params.title) : '';
+            window.location.href = title ? `/addPlan?title=${title}` : '/addPlan';
+            break;
+        }
+ 
+        case 'focus': {
+            const duration = params.duration || 30;
+            timeLeft = duration * 60;
+            initialTime = duration * 60;
+            updateTimerDisplay();
+            focusTitle.textContent = "Focusing...";
+            pauseBtn.style.display = "block";
+            addFocusBtn.style.display = "none";
+            startBtn.style.display = "none";
+            startTimer();
+            break;
+        }
+    }
+}
 });

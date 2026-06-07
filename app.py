@@ -465,8 +465,12 @@ def chat():
                              (datetime.now().isoformat(), user_id, session_id))
                 conn.commit()
 
-        response = handle_chat_message(user_id, message, tone)
-        return jsonify({'reply': response})
+        result = handle_chat_message(user_id, message, tone)
+        return jsonify({
+            'reply': result.get('message', ''),
+            'action': result.get('action'),
+            'params': result.get('params', {})
+        })
     except Exception as e:
         return jsonify({'error': f'Sorry, something went wrong! Error: {str(e)}'}), 500
 

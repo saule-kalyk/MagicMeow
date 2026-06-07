@@ -613,12 +613,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await res.json();
             if (data.reply) {
                 appendMessage('assistant', data.reply);
-                if (data.reply.toLowerCase().includes('add plan')) {
-                    const btn = document.querySelector(".add-plan");
-                    btn.style.backgroundColor = '#CEB3FF';
-                    setTimeout(() => { btn.style.backgroundColor = ''; window.location.href = '/addPlan'; }, 5000);
-                }
                 await loadChatHistory();
+                if (data.action) {
+                    setTimeout(() => handleBunnyAction(data.action, data.params || {}), 2000);
+                }
             } else {
                 appendMessage('assistant', 'Sorry, something went wrong!');
             }
@@ -724,4 +722,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     newChatBtn.addEventListener("click", startNewChat);
     fetchUserInfo().then(fetchCurrentSession);
+
+    function handleBunnyAction(action, params) {
+        switch (action) {
+            case 'statistics':
+                window.location.href = '/statistics';
+                break;
+            case 'view':
+                window.location.href = '/view';
+                break;
+            case 'add_plan': {
+                const title = params.title ? encodeURIComponent(params.title) : '';
+                window.location.href = title ? `/addPlan?title=${title}` : '/addPlan';
+                break;
+            }
+            case 'focus': {
+                const duration = params.duration || 30;
+                window.location.href = `/focus?duration=${duration}&autostart=true`;
+                break;
+            }
+        }
+    }
 });

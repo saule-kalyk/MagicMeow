@@ -84,11 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
             badge.textContent = `${stats[quadrant].completed}/${stats[quadrant].total}`;
             progressBarFill.style.width = stats[quadrant].total > 0 ? `${(stats[quadrant].completed / stats[quadrant].total) * 100}%` : '0%';
             progressBarFill.style.background = ['#F4A099', '#A3C1F3', '#FDE9A8', '#C9E2D0'][index];
-            if (quadrant !== 'Red') {
-                progressBar.style.background = stats[quadrant].total > 0 ? ['#A3C1F3', '#FDE9A8', '#C9E2D0'][index - 1] : 'white';
-            } else {
-                progressBar.style.background = 'white';
-            }
+            progressBar.style.background = '#f0f0f0';
             badge.style.background = ['#F4A099', '#A3C1F3', '#FDE9A8', '#C9E2D0'][index];
         });
 
@@ -461,15 +457,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await response.json();
             if (data.reply) {
                 appendMessage('assistant', data.reply);
-                if (data.reply.toLowerCase().includes('add plan')) {
-                    const addPlanButton = document.querySelector(".add-plan");
-                    addPlanButton.style.backgroundColor = '#CEB3FF';
-                    setTimeout(() => {
-                        addPlanButton.style.backgroundColor = '';
-                        window.location.href = '/addPlan';
-                    }, 1000);
-                }
                 await loadChatHistory();
+                if (data.action) {
+                    setTimeout(() => handleBunnyAction(data.action, data.params || {}), 2000);
+                }
             } else appendMessage('assistant', 'Sorry, something went wrong!');
         } catch (error) {
             appendMessage('assistant', 'Error: Could not send message.');
@@ -593,4 +584,25 @@ document.addEventListener("DOMContentLoaded", function () {
     newChatBtn.addEventListener("click", startNewChat);
 
     fetchUserInfo().then(fetchCurrentSession);
+
+    function handleBunnyAction(action, params) {
+        switch (action) {
+            case 'statistics':
+                window.location.href = '/statistics';
+                break;
+            case 'view':
+                window.location.href = '/view';
+                break;
+            case 'add_plan': {
+                const title = params.title ? encodeURIComponent(params.title) : '';
+                window.location.href = title ? `/addPlan?title=${title}` : '/addPlan';
+                break;
+            }
+            case 'focus': {
+                const duration = params.duration || 30;
+                window.location.href = `/focus?duration=${duration}&autostart=true`;
+                break;
+            }
+        }
+    }
 });

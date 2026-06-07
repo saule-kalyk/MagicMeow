@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const response = await fetch('/api/chat/new', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ })
+                body: JSON.stringify({})
             });
             const data = await response.json();
             if (!data.session_id) {
@@ -289,15 +289,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 // 刷新聊天历史
                 await loadChatHistory();
 
-                if (data.reply.toLowerCase().includes('add plan')) {
-                    const addPlanButton = document.querySelector('.add-plan');
-                    if (addPlanButton) {
-                        addPlanButton.style.backgroundColor = '#CEB3FF';
-                        setTimeout(() => {
-                            addPlanButton.style.backgroundColor = '';
-                            window.location.href = '/addPlan';
-                        }, 5000);
-                    }
+                if (data.action) {
+                    setTimeout(() => handleBunnyAction(data.action, data.params || {}), 2000);
                 }
             } else {
                 throw new Error(data.error || 'No reply from backend');
@@ -331,4 +324,28 @@ document.addEventListener("DOMContentLoaded", async function () {
             sendMessage();
         }
     });
+
+    function handleBunnyAction(action, params) {
+    switch (action) {
+        case 'statistics':
+            window.location.href = '/statistics';
+            break;
+
+        case 'view':
+            window.location.href = '/view';
+            break;
+ 
+        case 'add_plan': {
+            const title = params.title ? encodeURIComponent(params.title) : '';
+            window.location.href = title ? `/addPlan?title=${title}` : '/addPlan';
+            break;
+        }
+ 
+        case 'focus': {
+            const duration = params.duration || 30;
+            window.location.href = `/focus?duration=${duration}&autostart=true`;
+            break;
+        }
+    }
+}
 });
