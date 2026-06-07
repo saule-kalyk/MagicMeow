@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Love+Ya+Like+A+Sister&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Judson&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <div class="sidebar">
@@ -62,8 +64,10 @@
             <header class="folder-header">
                 <h1>FOLDER</h1>
                 <img src="/static/images/icon-folder-extra.png" alt="" class="folder" id="addFolder">
-                <img src="/static/images/arrow.png" alt="" class="folder" id="back-page" onclick="window.location.href='/viewMonthly'">
+                <img src="/static/images/arrow.png" alt="" class="folder" id="back-page"
+                    onclick="window.location.href='/viewMonthly'">
             </header>
+
             <div class="folder-illustration" id="illustration">
                 <img src="/static/images/bgFolder.png" alt="" class="main-illustration">
                 <p class="empty-message">You haven't added any folders yet.</p>
@@ -101,6 +105,86 @@
                     </div>
                 </form>
             </div>
+
+            <div class="folder-plans-view" id="folderPlansView" style="display:none;">
+                <div class="plans-view-header">
+                    <button class="back-btn" id="backToFolders">
+                        <img src="/static/images/arrow.png" alt="">
+                    </button>
+                    <h2 id="currentFolderName"></h2>
+                </div>
+                <hr class="dotted-divider">
+                <div class="plans-list" id="plansList"></div>
+            </div>
+
+            <!-- PLAN POPUP -->
+            <div class="plan-details" id="planPopup" style="display:none;">
+                <img class="back-arrow-plan" src="/static/images/arrow.png" alt="Back">
+                <h2 class="plan-name-plan">Plan Title</h2>
+                <div class="plan-body">
+                    <div class="left-column">
+                        <div class="folder-select-plan">
+                            <img src="/static/images/icon-folder.png" alt="" style="height: 50px; width:auto;">
+                            <div class="folder-name-plan">Folder Name</div>
+                        </div>
+                        <div class="date-plan">
+                            <img src="/static/images/icon-date.png" alt="icon">
+                            <div class="date-info">
+                                <div class="date-range">Date Range</div>
+                                <div class="progress-bar"><div class="progress-fill" style="background-color: #C9E2D0;"></div></div>
+                            </div>
+                        </div>
+                        <div class="time-plan">
+                            <img src="/static/images/icon-time.png" alt="icon">
+                            <div class="time-info">
+                                <div class="time-range">Time Range</div>
+                                <div class="time-progress-container">
+                                    <div class="progress-bar" style="width: 170px;">
+                                        <div class="progress-fill" style="background-color: #F4A099;"></div>
+                                    </div>
+                                    <div class="time-left-label"><span class="time-icon"></span><span>Time Left</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reminder-plan">
+                            <img src="/static/images/icon-reminder.png" alt="">
+                            <span>Reminder Notification</span>
+                            <label class="switch">
+                                <input type="checkbox" id="reminderToggle">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="repeat-plan">
+                            <img src="/static/images/icon-repeat.png" alt="">
+                            <span class="month-text">Repeat: </span>
+                            <span class="week-text"></span>
+                            <span class="days-text"></span>
+                        </div>
+                    </div>
+                    <div class="right-column">
+                        <div class="notes-plan">
+                            <label>Notes:</label>
+                            <textarea class="notes-text" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="quadrants-plan">
+                    <div class="highlight-oval-plan"></div>
+                    <div class="quadrant-content-plan">
+                        <div class="quadrant-item-plan top-left-plan"><img src="/static/images/yellow 2.png" alt="Fish"><p>Without putting much effort into it</p></div>
+                        <div class="quadrant-item-plan top-right-plan"><img src="/static/images/red 2.png" alt="Fish"><p>Not doing it will cause problems</p></div>
+                        <div class="quadrant-item-plan bottom-left-plan"><img src="/static/images/green 2.png" alt="Fish"><p>Trivial matters and chores</p></div>
+                        <div class="quadrant-item-plan bottom-right-plan"><img src="/static/images/blue 2.png" alt="Fish"><p>Periodic goals</p></div>
+                    </div>
+                </div>
+                <div class="buttons-wrapper">
+                    <div class="buttons-plan">
+                        <button class="edit-btn-plan">Edit</button>
+                        <button class="delete-btn-plan">Delete</button>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
         <div class="message-box-wrapper">
@@ -110,13 +194,16 @@
             </div>
             <div class="extra">
                 <button class="extra-btn" id="bunny"><img src="/static/images/bunny.png" alt=""></button>
-                <button class="extra-btn" id="discover" onclick="window.location.href='/discover';"><img src="/static/images/discover.png" alt=""></button>
+                <button class="extra-btn" id="discover" onclick="window.location.href='/discover';"><img
+                        src="/static/images/discover.png" alt=""></button>
             </div>
 
             <div class="reminder-panel" id="reminderPanel">
                 <div class="section">
                     <div class="section-title">Chat History</div>
-                    <button id="newChatBtn" style="font-family: 'Jua', sans-serif; font-size: 16px; padding: 8px; margin: 0 10px 10px; border: 2px solid black; border-radius: 10px; background: white; cursor: pointer;">Start New Chat</button>
+                    <button id="newChatBtn"
+                        style="font-family: 'Jua', sans-serif; font-size: 16px; padding: 8px; margin: 0 10px 10px; border: 2px solid black; border-radius: 10px; background: white; cursor: pointer;">Start
+                        New Chat</button>
                     <div class="chat-history" id="chatHistory"></div>
                 </div>
             </div>
@@ -129,7 +216,8 @@
                         </div>
                         <div class="message-box-input">
                             <input type="text" placeholder="..." class="Input" id="Input">
-                            <button class="send-btn" id="send-btn"><img src="/static/images/send.png" alt="Send" style="width: 60px;"></button>
+                            <button class="send-btn" id="send-btn"><img src="/static/images/send.png" alt="Send"
+                                    style="width: 60px;"></button>
                         </div>
                     </div>
                 </div>
@@ -144,4 +232,5 @@
 
     <script src="/static/js/folder.js"></script>
 </body>
+
 </html>

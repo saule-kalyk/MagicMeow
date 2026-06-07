@@ -671,6 +671,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.querySelector(".plan-details").style.display = "block";
                 delete document.getElementById("save-btn").dataset.editPlanId;
                 alert(successMessage);
+                const returnTo = new URLSearchParams(window.location.search).get('returnTo');
+                if (returnTo) {
+                    window.location.href = returnTo;
+                }
             } else if (response.status === 401) {
                 alert("Please log in to save your plan.");
                 window.location.href = "/login";
@@ -1025,4 +1029,82 @@ document.addEventListener("DOMContentLoaded", function () {
     newChatBtn.addEventListener("click", startNewChat);
 
     fetchUserInfo().then(fetchCurrentSession);
+
+    // ── LOAD PLAN FOR EDITING ──
+    const urlParams = new URLSearchParams(window.location.search);
+    const editPlanId = urlParams.get('editPlanId');
+    if (editPlanId) {
+        fetch('/api/get_plans')
+            .then(res => res.json())
+            .then(result => {
+                if (!result.success) return;
+                const plan = result.plans.find(p => p.id === editPlanId);
+                if (!plan) return;
+
+                document.getElementById("planName").value = plan.plan_name || '';
+                document.getElementById("notes").value = plan.notes || '';
+                selectedFolder = plan.folder;
+                document.getElementById("selectedFolder").textContent = plan.folder || 'Select folder';
+                selectedStart = plan.date_start ? dayjs(plan.date_start) : null;
+                selectedEnd = plan.date_end ? dayjs(plan.date_end) : null;
+                startTime = plan.time_start || null;
+                endTime = plan.time_end || null;
+                repeatType = plan.repeat?.type || null;
+                repeatCount = plan.repeat?.count || 0;
+                repeatDays = plan.repeat?.days || [];
+                selectedRepeatDays = plan.repeat?.days || [];
+                reminderEnabled = plan.reminder?.enabled || false;
+                forcedReminder = plan.reminder?.forced || false;
+                reminderTime = plan.reminder?.time || { value: 0, unit: "hours" };
+                selectedQuadrant = plan.quadrant || null;
+
+                document.getElementById("reminder").checked = reminderEnabled;
+                document.querySelector(".reminder-hide").style.visibility = reminderEnabled ? "visible" : "hidden";
+                document.getElementById("forced").checked = forcedReminder;
+
+                if (selectedQuadrant && oval) {
+                    const item = document.querySelector(`.quadrant-item.${selectedQuadrant}`);
+                    if (item) {
+                        const rect = item.getBoundingClientRect();
+                        const parentRect = item.parentElement.getBoundingClientRect();
+                        oval.style.left = (rect.left - parentRect.left + rect.width / 2 - 90) + "px";
+                        oval.style.top = (rect.top - parentRect.top + 10) + "px";
+                        oval.style.borderColor = colorMap[selectedQuadrant];
+                        oval.style.display = "block";
+                    }
+                }
+
+                if (repeatType) {
+                    const repeatBtn = document.querySelector(`#repeat-${repeatType}`);
+                    if (repeatBtn) repeatBtn.classList.add('active');
+                    const repeatPart = document.getElementById(`${repeatType}-part`);
+                    if (repeatPart) repeatPart.style.display = 'block';
+                    const repeatInput = document.getElementById(`${repeatType}RepeatCount`);
+                    if (repeatInput) repeatInput.value = repeatCount;
+                    if (repeatType === "week") {
+                        repeatDays.forEach(day => {
+                            const circle = document.querySelector(`.week-circle[data-day="${day}"]`);
+                            if (circle) circle.classList.add('active');
+                        });
+                    }
+                }
+
+                if (startTime) {
+                    document.querySelectorAll("#start-time-scroll .time-option").forEach(opt => {
+                        if (opt.textContent === startTime) opt.classList.add("selected");
+                    });
+                }
+                if (endTime) {
+                    document.querySelectorAll("#end-time-scroll .time-option").forEach(opt => {
+                        if (opt.textContent === endTime) opt.classList.add("selected");
+                    });
+                }
+
+                renderCalendar();
+                renderCustomCalendar();
+                checkSaveButtonVisibility();
+                document.getElementById("save-btn").dataset.editPlanId = editPlanId;
+            })
+            .catch(e => console.error('Error loading plan for edit:', e));
+    }
 });

@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelector(".edit-btn-plan").addEventListener("click", () => {
         const planId = planPopup.dataset.planId;
-        if (planId) window.location.href = `/addPlan?editPlanId=${planId}`;
+        if (planId) window.location.href = `/addPlan?editPlanId=${planId}&returnTo=/viewMonthly`;
     });
 
     // ── FETCH PLANS (общий) ──
