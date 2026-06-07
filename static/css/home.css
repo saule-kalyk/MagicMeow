@@ -457,7 +457,7 @@ body {
     object-fit: cover;
     border-radius: 50%;
     border: 0.1875rem solid black;
-    margin: 0 0.625rem;
+    margin: 0;
 }
 
 .Message__Element.Bot img {
