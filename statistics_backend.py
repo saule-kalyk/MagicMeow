@@ -105,20 +105,77 @@ def get_plan_stats():
                  (p.get('date_start') or p.get('date') or '').startswith(current_year) or
                  (p.get('date_end') or '').startswith(current_year)]
 
-    def calculate_stats(plans):
+    def calculate_stats_daily(plans, date_str):
+        """Daily: план выполнен если date_str есть в completed_dates."""
         stats = {'Red': {'completed': 0, 'total': 0}, 'Blue': {'completed': 0, 'total': 0}, 'Yellow': {'completed': 0, 'total': 0}, 'Green': {'completed': 0, 'total': 0}}
         for plan in plans:
             quadrant = normalize_quadrant(plan.get('quadrant'))
             if quadrant in stats:
                 stats[quadrant]['total'] += 1
-                if plan.get('completed', False):
+                completed_dates = plan.get('completed_dates') or []
+                if date_str in completed_dates:
                     stats[quadrant]['completed'] += 1
         return stats
 
+    def calculate_stats_monthly(plans, month_str):
+        """Monthly: процент дней выполнения за месяц по квадранту."""
+        stats = {'Red': {'completed': 0, 'total': 0}, 'Blue': {'completed': 0, 'total': 0}, 'Yellow': {'completed': 0, 'total': 0}, 'Green': {'completed': 0, 'total': 0}}
+        for plan in plans:
+            quadrant = normalize_quadrant(plan.get('quadrant'))
+            if quadrant not in stats:
+                continue
+            # Считаем сколько дней плана попадает в текущий месяц
+            start = plan.get('date_start') or plan.get('date') or ''
+            end = plan.get('date_end') or start
+            if not start:
+                continue
+            from datetime import date as dt_date
+            try:
+                s = dt_date.fromisoformat(max(start, month_str + '-01'))
+                import calendar
+                last_day = calendar.monthrange(int(month_str[:4]), int(month_str[5:7]))[1]
+                e = dt_date.fromisoformat(min(end, month_str + f'-{last_day:02d}'))
+            except ValueError:
+                continue
+            if s > e:
+                continue
+            total_days = (e - s).days + 1
+            completed_dates = plan.get('completed_dates') or []
+            completed_in_month = sum(1 for d in completed_dates if d.startswith(month_str))
+            stats[quadrant]['total'] += total_days
+            stats[quadrant]['completed'] += completed_in_month
+        return stats
+
+    def calculate_stats_all(plans, year_str):
+        """All: то же что monthly но за весь год."""
+        stats = {'Red': {'completed': 0, 'total': 0}, 'Blue': {'completed': 0, 'total': 0}, 'Yellow': {'completed': 0, 'total': 0}, 'Green': {'completed': 0, 'total': 0}}
+        for plan in plans:
+            quadrant = normalize_quadrant(plan.get('quadrant'))
+            if quadrant not in stats:
+                continue
+            start = plan.get('date_start') or plan.get('date') or ''
+            end = plan.get('date_end') or start
+            if not start:
+                continue
+            from datetime import date as dt_date
+            try:
+                s = dt_date.fromisoformat(max(start, year_str + '-01-01'))
+                e = dt_date.fromisoformat(min(end, year_str + '-12-31'))
+            except ValueError:
+                continue
+            if s > e:
+                continue
+            total_days = (e - s).days + 1
+            completed_dates = plan.get('completed_dates') or []
+            completed_in_year = sum(1 for d in completed_dates if d.startswith(year_str))
+            stats[quadrant]['total'] += total_days
+            stats[quadrant]['completed'] += completed_in_year
+        return stats
+
     stats = {
-        'daily': calculate_stats(daily_plans),
-        'monthly': calculate_stats(monthly_plans),
-        'all': calculate_stats(all_plans)
+        'daily': calculate_stats_daily(daily_plans, current_date),
+        'monthly': calculate_stats_monthly(monthly_plans, current_month),
+        'all': calculate_stats_all(all_plans, current_year)
     }
     print(f"Calculated stats: {stats}")  # Debug: Log final stats
     return jsonify({'success': True, 'stats': stats})

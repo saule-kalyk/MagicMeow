@@ -338,7 +338,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Очищаем планы
         document.querySelectorAll(".day-box .plans").forEach(p => p.innerHTML = "");
-        document.querySelector(".goal-box .goals").innerHTML = "";
+        const goalsBox = document.querySelector(".goal-box .goals");
+        if (goalsBox) goalsBox.innerHTML = "";
 
         fetchPlans().then(plans => plans.forEach(addPlanToWeek));
     }
@@ -347,8 +348,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const { date_start, date_end, plan_name, time_start, time_end, quadrant, id, completed, folder } = plan;
         if (!date_start) return;
 
-        const startDate = new Date(date_start);
-        let endDate = date_end ? new Date(date_end) : new Date(date_start);
+        const startDate = new Date(date_start + 'T00:00:00');
+        let endDate = date_end ? new Date(date_end + 'T00:00:00') : new Date(date_start + 'T00:00:00');
         if (endDate < startDate) endDate = startDate;
 
         const weekEnd = new Date(currentWeekStart);
@@ -357,21 +358,19 @@ document.addEventListener("DOMContentLoaded", function () {
         let current = new Date(startDate);
         while (current <= endDate) {
             if (current >= currentWeekStart && current <= weekEnd) {
-                const dow = (current.getDay() + 6) % 7;
+                const dow = current.getDay(); // 0=Sun, 1=Mon...6=Sat matches HTML
                 const dayBox = document.querySelector(`.day-box[data-day="${dow}"] .plans`);
-                if (dayBox && !dayBox.querySelector(`[data-plan-id="${id}"]`)) {
-                    dayBox.appendChild(createPlanElement(plan));
+                const dateStr = formatDate(current);
+                if (dayBox && !dayBox.querySelector(`[data-plan-id="${id}-${dateStr}"]`)) {
+                    const el = createPlanElement(plan, dateStr);
+                    el.setAttribute("data-plan-id", `${id}-${dateStr}`);
+                    dayBox.appendChild(el);
                 }
             }
             current.setDate(current.getDate() + 1);
         }
 
-        if (folder === "Goals") {
-            const goalsBox = document.querySelector(".goal-box .goals");
-            if (goalsBox && !goalsBox.querySelector(`[data-plan-id="${id}"]`)) {
-                goalsBox.appendChild(createPlanElement(plan));
-            }
-        }
+        // Goals box removed from UI — skipped
     }
 
     // ── DAILY ──
@@ -433,10 +432,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const cur = new Date(currentDay);
         cur.setHours(0, 0, 0, 0);
 
-        const startDate = new Date(date_start);
+        const startDate = new Date(date_start + 'T00:00:00');
         startDate.setHours(0, 0, 0, 0);
 
-        const endDate = date_end ? new Date(date_end) : new Date(date_start);
+        const endDate = date_end ? new Date(date_end + 'T00:00:00') : new Date(date_start + 'T00:00:00');
         endDate.setHours(23, 59, 59, 999);
 
         if (cur < startDate || cur > endDate) return;
@@ -452,7 +451,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const slot = document.querySelector(`.plan-slot[data-hour="${h}"]`);
             if (!slot) continue;
 
-            const el = createPlanElement(plan);
+            const currentDayStr = formatDate(currentDay);
+            const el = createPlanElement(plan, currentDayStr);
 
             // Добавляем время
             const timeSpan = document.createElement("div");
@@ -472,7 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ── ОБЩИЙ ЭЛЕМЕНТ ПЛАНА ──
-    function createPlanElement(plan) {
+    function createPlanElement(plan, dateStr) {
         const { plan_name, time_start, time_end, quadrant, id, completed } = plan;
         const el = document.createElement("div");
         el.classList.add("plan-quadrant", quadrant || 'top-right');
@@ -482,12 +482,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.classList.add("complete-checkbox");
-        const todayStr = formatDate(new Date());
+        const checkDateStr = dateStr || formatDate(new Date());
         const completedDates = plan.completed_dates || [];
-        checkbox.checked = completedDates.includes(todayStr);
+        checkbox.checked = completedDates.includes(checkDateStr);
         checkbox.dataset.planId = id;
+        checkbox.dataset.checkDate = checkDateStr;
         checkbox.addEventListener("change", async (e) => {
-            await updatePlanCompletion(e.target.dataset.planId, e.target.checked, plan);
+            await updatePlanCompletion(e.target.dataset.planId, e.target.checked, e.target.dataset.checkDate);
         });
 
         const name = document.createElement("div");
@@ -503,15 +504,20 @@ document.addEventListener("DOMContentLoaded", function () {
         return el;
     }
 
-    async function updatePlanCompletion(planId, checked, plan) {
+    async function updatePlanCompletion(planId, checked, checkDate) {
         try {
-            const todayStr = formatDate(new Date());
-            let completedDates = plan.completed_dates || [];
+            const dateStr = checkDate || formatDate(new Date());
+
+            // Fetch fresh plan data to avoid stale completed_dates
+            const plansRes = await fetch('/api/get_plans');
+            const plansData = await plansRes.json();
+            const freshPlan = (plansData.plans || []).find(p => p.id === planId);
+            let completedDates = (freshPlan && freshPlan.completed_dates) ? [...freshPlan.completed_dates] : [];
 
             if (checked) {
-                if (!completedDates.includes(todayStr)) completedDates.push(todayStr);
+                if (!completedDates.includes(dateStr)) completedDates.push(dateStr);
             } else {
-                completedDates = completedDates.filter(d => d !== todayStr);
+                completedDates = completedDates.filter(d => d !== dateStr);
             }
 
             const res = await fetch('/api/edit_plan', {
@@ -722,6 +728,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     newChatBtn.addEventListener("click", startNewChat);
     fetchUserInfo().then(fetchCurrentSession);
+
+    function handleBunnyAction(action, params) {
+        switch (action) {
+            case 'statistics':
+                window.location.href = '/statistics';
+                break;
+            case 'view':
+                window.location.href = '/view';
+                break;
+            case 'add_plan': {
+                const title = params.title ? encodeURIComponent(params.title) : '';
+                window.location.href = title ? `/addPlan?title=${title}` : '/addPlan';
+                break;
+            }
+            case 'focus': {
+                const duration = params.duration || 30;
+                window.location.href = `/focus?duration=${duration}&autostart=true`;
+                break;
+            }
+        }
+    }
 
     function handleBunnyAction(action, params) {
         switch (action) {
