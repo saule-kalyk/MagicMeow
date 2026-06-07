@@ -574,14 +574,20 @@ body {
     top: 1.875rem;
     right: 3.75rem;
     width: 18.75rem;
-    height: 37.5rem;
+    max-height: 37.5rem;
+    overflow-y: auto;
     border: 0.125rem solid black;
     border-radius: 1.25rem;
-    padding: 0.625rem 0 0.625rem 0;
+    padding: 0.625rem 0;
     font-family: 'Jua', sans-serif;
     background-color: white;
     box-sizing: border-box;
     z-index: 100;
+}
+
+.chat-history {
+    overflow-y: auto;
+    max-height: 28rem;
 }
 
 .section {

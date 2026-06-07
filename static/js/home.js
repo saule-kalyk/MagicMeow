@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         setTimeout(() => {
                             addPlanButton.style.backgroundColor = '';
                             window.location.href = '/addPlan';
-                        }, 1000);
+                        }, 5000);
                     }
                 }
             } else {

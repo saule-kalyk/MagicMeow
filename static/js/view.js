@@ -616,7 +616,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.reply.toLowerCase().includes('add plan')) {
                     const btn = document.querySelector(".add-plan");
                     btn.style.backgroundColor = '#CEB3FF';
-                    setTimeout(() => { btn.style.backgroundColor = ''; window.location.href = '/addPlan'; }, 1000);
+                    setTimeout(() => { btn.style.backgroundColor = ''; window.location.href = '/addPlan'; }, 5000);
                 }
                 await loadChatHistory();
             } else {

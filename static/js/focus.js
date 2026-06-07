@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     setTimeout(() => {
                         addPlanButton.style.backgroundColor = '';
                         window.location.href = '/addPlan';
-                    }, 1000);
+                    }, 5000);
                 }
                 await loadChatHistory();
             } else {
