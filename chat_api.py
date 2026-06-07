@@ -10,9 +10,12 @@ import json
 # 加载环境变量
 load_dotenv()
 
+DATA_DIR = os.getenv('DATA_DIR', '.')
+CHAT_DB = os.path.join(DATA_DIR, 'chat_history.db')
+
 # 初始化 SQLite 数据库
 def init_db():
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         conn.execute('''
             CREATE TABLE IF NOT EXISTS history (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,7 +55,8 @@ def handle_chat_message(user_id, message, tone='cute'):
     # Load users to get time_personality
     def read_users():
         try:
-            with open('users.json', 'r') as f:
+            users_path = os.path.join(DATA_DIR, 'users.json')
+            with open(users_path, 'r') as f:
                 data = json.load(f)
                 return data['users']
         except (FileNotFoundError, json.JSONDecodeError):
@@ -111,7 +115,7 @@ def handle_chat_message(user_id, message, tone='cute'):
     session_id = session['chat_session_id']
 
     # 获取当前会话的聊天历史
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         cursor = conn.execute('''
             SELECT role, content FROM history
             WHERE user_id = ? AND session_id = ?
@@ -158,7 +162,7 @@ def handle_chat_message(user_id, message, tone='cute'):
 
     # 存储消息
     current_time = datetime.now().isoformat()
-    with sqlite3.connect('chat_history.db') as conn:
+    with sqlite3.connect(CHAT_DB) as conn:
         conn.execute('UPDATE history SET is_current = 0 WHERE user_id = ?', (user_id,))
         conn.execute('''
             INSERT INTO history (user_id, session_id, session_title, role, content, timestamp, is_current, latest_update)
