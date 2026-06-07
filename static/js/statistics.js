@@ -287,20 +287,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateMoodStats(stats) {
         const monthlyBars = document.querySelectorAll('#monthly-content .bar');
-        monthlyBars.forEach(bar => {
-            const mood = parseInt(bar.querySelector('.value').getAttribute('data-mood'));
-            const value = stats.monthly[mood] || 0;
-            const valueElement = bar.querySelector('.value');
-            valueElement.textContent = `${value.toFixed(2)}%`;
-            const shape = bar.querySelector('.bar-shape');
-            const star = bar.querySelector('.star');
-            if (value > 30) {
-                shape.classList.add('tall');
-                star.src = '/static/images/filledStar.png';
-            } else {
-                shape.classList.remove('tall');
-                star.src = '/static/images/star.png';
-            }
+        bars.forEach(bar => {
+            const star = bar.querySelector(".star");
+            const mood = parseInt(bar.getAttribute('data-id'));
+            star.addEventListener("click", async () => {
+                if (selectedMood === mood) {
+                    await clearMood();
+                    selectedMood = null;
+                } else {
+                    await saveMood(mood);
+                    selectedMood = mood;
+                }
+            });
         });
 
         const allBars = document.querySelectorAll('#all-content .bar');
@@ -407,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             const data = await response.json();
             if (data.avatar) userAvatar = data.avatar;
-            
+
             if (data.days) {
                 const daysEl = document.getElementById('days');
                 if (daysEl) daysEl.textContent = `day ${data.days}`;

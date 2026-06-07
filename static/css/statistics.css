@@ -597,7 +597,7 @@ body {
 .mood-chart {
     border: 0.1875rem solid black;
     border-radius: 1.25rem;
-    padding: 1.25rem 0.625rem 0.625rem 0;
+    padding: 0;
     width: 100%;
     margin: auto;
     font-family: 'Jua', sans-serif;
@@ -616,27 +616,26 @@ body {
 
 .chart-area {
     position: relative;
-    padding-left: 0.625rem;
-    padding-bottom: 0.625rem;
+    padding: 1.25rem 0.625rem 0.625rem 0.625rem;
     width: 100%;
 }
 
 .chart-area::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 2.5rem;
+    top: 1.25rem;
+    left: 0.625rem;
     width: 0.1875rem;
-    height: calc(100% - 2.6875rem);
+    height: calc(100% - 3.9rem);
     background-color: black;
 }
 
 .chart-area::after {
     content: '';
     position: absolute;
-    bottom: 2.6875rem;
-    left: 2.5rem;
-    width: calc(100% - 3.75rem);
+    bottom: 2.7rem;
+    left: 0.625rem;
+    width: calc(100% - 1.25rem);
     height: 0.1875rem;
     background-color: black;
 }
@@ -694,7 +693,7 @@ body {
     display: flex;
     border: 0.1875rem solid black;
     border-radius: 1.25rem;
-    padding: 1.25rem 0.625rem 0.625rem 0;
+    padding: 0;
     width: 100%;
     height: 12.5rem;
     margin: auto;
@@ -706,8 +705,7 @@ body {
 
 .chart-area-daily {
     position: relative;
-    padding-left: 0.625rem;
-    padding-bottom: 0.625rem;
+    padding: 1.25rem 0.625rem 0.625rem 0.625rem;
     display: block;
     align-items: end;
     width: 100%;
@@ -716,10 +714,10 @@ body {
 .chart-area-daily::before {
     content: '';
     position: absolute;
-    top: 0.5rem;
-    left: 1.25rem;
+    top: 1.25rem;
+    left: 0.625rem;
     width: 0.1875rem;
-    height: calc(100% - 1.25rem);
+    height: calc(100% - 1.875rem);
     background-color: black;
 }
 
@@ -727,7 +725,7 @@ body {
     content: '';
     position: absolute;
     bottom: 0.625rem;
-    left: 1.25rem;
+    left: 0.625rem;
     width: calc(100% - 1.25rem);
     height: 0.1875rem;
     background-color: black;

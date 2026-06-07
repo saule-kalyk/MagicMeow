@@ -17,6 +17,10 @@
                 {
                     "date": "2026-06-05",
                     "mood": 3
+                },
+                {
+                    "date": "2026-06-07",
+                    "mood": 1
                 }
             ],
             "plans": [
@@ -63,6 +67,40 @@
                     "quadrant": "bottom-right",
                     "completed": true,
                     "created_at": "2026-06-05T08:35:30"
+                },
+                {
+                    "id": "db7ac6e9-69a4-4b00-a32e-39ff1a63046c",
+                    "plan_name": "\u0447\u0442\u043e \u0442\u043e \u0434\u043b\u0438\u043d\u043d\u043e\u0435 \u043d\u0430\u043f\u0438\u0448\u0435\u043c, \u0434\u043b\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438",
+                    "folder": "UI/UX",
+                    "notes": "",
+                    "date_start": null,
+                    "date_end": null,
+                    "time_start": null,
+                    "time_end": null,
+                    "repeat": {
+                        "type": null,
+                        "count": 0,
+                        "days": null
+                    },
+                    "reminder": null,
+                    "quadrant": null,
+                    "completed": false,
+                    "created_at": "2026-06-07T12:08:17"
+                },
+                {
+                    "id": "8b0055e6-a5c5-43b6-8fe5-c7494ab419e1",
+                    "plan_name": "\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430",
+                    "folder": "UI/UX",
+                    "notes": "",
+                    "date_start": "2026-06-04",
+                    "date_end": "2026-06-25",
+                    "time_start": null,
+                    "time_end": null,
+                    "repeat": null,
+                    "reminder": null,
+                    "quadrant": null,
+                    "completed": false,
+                    "created_at": "2026-06-07T12:08:54"
                 }
             ],
             "folders": [

@@ -590,7 +590,8 @@ body {
 }
 
 .add-focus-btn img {
-    width: 3.75rem;
+    width: 2rem;
+    height: auto;
 }
 
 .timer-circle {
