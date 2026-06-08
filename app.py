@@ -960,7 +960,10 @@ def get_plans():
 if __name__ == '__main__':
     app.run(debug=True)
 
-
+@app.route('/api/debug_users', methods=['GET'])
+def debug_users():
+    users = read_users()
+    return jsonify([{'id': u.get('id'), 'username': u.get('username'), 'email': u.get('email')} for u in users])
 
 @app.route('/api/inject_demo_user', methods=['GET'])
 def inject_demo_user():
