@@ -281,7 +281,7 @@ def save_quiz_result():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'success': False, 'error': 'User not found'}), 404
 
@@ -295,7 +295,7 @@ def home():
     if 'user_id' not in session:
         flash('Please login first.', 'error')
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -306,7 +306,7 @@ def home():
 def profile():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -316,7 +316,7 @@ def profile():
 def view():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -330,7 +330,7 @@ def view_monthly():
 def folder_page():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -348,7 +348,7 @@ def view_daily():
 def focus():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -358,7 +358,7 @@ def focus():
 def statistics():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -368,7 +368,7 @@ def statistics():
 def setting():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -378,7 +378,7 @@ def setting():
 def about_us():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -388,7 +388,7 @@ def about_us():
 def add_plan_page():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -398,7 +398,7 @@ def add_plan_page():
 def discover():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         flash('User not found.', 'error')
         return redirect(url_for('login'))
@@ -558,7 +558,7 @@ def user_summary():
 
     user_id = session['user_id']
     users = read_users()
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'success': False, 'error': 'User not found'}), 404
 
@@ -594,7 +594,7 @@ def save_focus_session():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'success': False, 'error': 'User not found'}), 404
 
@@ -658,7 +658,7 @@ def update_username():
     users = read_users()
     user_id = session['user_id']
 
-    if any(u.get('username') == new_username and u['id'] != user_id for u in users):
+    if any(u.get('username') == new_username and u.get('id') != user_id for u in users):
         return jsonify({'success': False, 'error': 'Username already exists'}), 400
 
     for user in users:
@@ -676,7 +676,7 @@ def update_username():
 def user_info():
     if 'user_id' not in session:
         return jsonify({'error': 'Please login first'}), 401
-    user = next((u for u in read_users() if u['id'] == session['user_id']), None)
+    user = next((u for u in read_users() if u.get('id') == session['user_id']), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
@@ -736,7 +736,7 @@ def get_folders():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'success': False, 'error': 'User not found'}), 404
 
@@ -756,7 +756,7 @@ def create_folder():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'success': False, 'error': 'User not found'}), 404
 
@@ -788,7 +788,7 @@ def rename_folder():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'success': False, 'error': 'User not found'}), 404
 
@@ -821,7 +821,7 @@ def delete_folder():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'success': False, 'error': 'User not found'}), 404
 
@@ -851,7 +851,7 @@ def add_plan():
         return jsonify({'error': 'Plan name and folder are required'}), 400
 
     users = read_users()
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
@@ -891,7 +891,7 @@ def delete_plan():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
@@ -915,7 +915,7 @@ def edit_plan():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
@@ -950,7 +950,7 @@ def get_plans():
 
     user_id = session['user_id']
     users = read_users()
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'success': False, 'error': 'User not found'}), 404
 
