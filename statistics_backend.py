@@ -68,7 +68,7 @@ def get_plan_stats():
 
     user_id = session['user_id']
     users = read_users()
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
@@ -192,7 +192,7 @@ def save_mood():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
@@ -213,7 +213,7 @@ def clear_mood():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
@@ -233,7 +233,7 @@ def get_mood_stats():
 
     user_id = session['user_id']
     users = read_users()
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
 
@@ -279,7 +279,7 @@ def get_focus_stats():
 
     user_id = session['user_id']
     users = read_users()
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return jsonify({'error': 'User not found'}), 404
 

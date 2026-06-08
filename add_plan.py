@@ -28,7 +28,7 @@ def add_plan():
 
     users = read_users()
     user_id = session['user_id']
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if not user:
         return redirect('/login')
 

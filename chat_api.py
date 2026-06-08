@@ -50,7 +50,7 @@ def handle_chat_message(user_id, message, tone='cute'):
             return []
 
     users = read_users()
-    user = next((u for u in users if u['id'] == user_id), None)
+    user = next((u for u in users if u.get('id') == user_id), None)
     if user and 'time_personality' in user.get('settings', {}):
         personality_to_tone = {
             'plan-oriented': 'serious',
