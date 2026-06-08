@@ -968,7 +968,7 @@ def debug_users():
 @app.route('/api/inject_demo_user', methods=['GET'])
 def inject_demo_user():
     import json, os
-    demo_path = os.path.join(os.path.dirname(__file__), 'demo_user.json')
+    demo_path = os.path.join(os.path.dirname(__file__), 'demo_data.json')
     with open(demo_path, 'r') as f:
         demo_data = json.load(f)
     users = read_users()
