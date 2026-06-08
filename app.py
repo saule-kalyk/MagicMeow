@@ -156,7 +156,7 @@ def login():
         username = form.username.data
         password = form.password.data
         users = read_users()
-        user = next((u for u in users if u['username'] == username), None)
+        user = next((u for u in users if u.get('username') == username), None)
         if user and user['password_hash'] and check_password_hash(user['password_hash'], password):
             session['user_id'] = user['id']
             session['username'] = user['username']
@@ -180,7 +180,7 @@ def google_callback():
         user_info = token['userinfo']
         email = user_info['email']
         users = read_users()
-        user = next((u for u in users if u['email'] == email), None)
+        user = next((u for u in users if u.get('email') == email), None)
 
         if user:
             session['user_id'] = user['id']
@@ -210,13 +210,13 @@ def create_account():
         if any(u.get('username') == username for u in users):
             flash('Username already exists.', 'error')
             return render_template('createAccount.html', form=form, email=email)
-        if email and any(u['email'] == email for u in users):
+        if email and any(u.get('email') == email for u in users):
             flash('Email already registered.', 'error')
             return render_template('createAccount.html', form=form, email=email)
 
         # 创建新用户
         new_user = {
-            'id': max([u['id'] for u in users], default=0) + 1,
+            'id': max([u['id'] for u in users if isinstance(u['id'], int)], default=0) + 1,
             'username': username,
             'password_hash': generate_password_hash(password),
             'email': email or f'{username}@magicmeow.com',
@@ -658,7 +658,7 @@ def update_username():
     users = read_users()
     user_id = session['user_id']
 
-    if any(u['username'] == new_username and u['id'] != user_id for u in users):
+    if any(u.get('username') == new_username and u['id'] != user_id for u in users):
         return jsonify({'success': False, 'error': 'Username already exists'}), 400
 
     for user in users:
