@@ -970,9 +970,15 @@ def inject_demo_user():
     import json, os
     demo_path = os.path.join(os.path.dirname(__file__), 'demo_user.json')
     with open(demo_path, 'r') as f:
-        demo_user = json.load(f)
+        demo_data = json.load(f)
     users = read_users()
-    users = [u for u in users if u.get('email') != '210103344@stu.sdu.edu.kz']
-    users.append(demo_user)
+    user = next((u for u in users if u.get('id') == 10), None)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    user['focus_records'] = demo_data['focus_records']
+    user['mood_records'] = demo_data['mood_records']
+    user['plans'] = demo_data['plans']
+    user['folders'] = demo_data['folders']
+    user['created_at'] = demo_data['created_at']
     write_users(users)
     return jsonify({'success': True})
