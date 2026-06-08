@@ -207,7 +207,7 @@ def create_account():
         users = read_users()
 
         # 检查用户名和邮箱唯一性
-        if any(u['username'] == username for u in users):
+        if any(u.get('username') == username for u in users):
             flash('Username already exists.', 'error')
             return render_template('createAccount.html', form=form, email=email)
         if email and any(u['email'] == email for u in users):
