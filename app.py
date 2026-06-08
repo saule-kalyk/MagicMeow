@@ -967,4 +967,16 @@ def inject_demo_user():
     users = [u for u in users if u.get('email') != '210103344@stu.sdu.edu.kz']
     users.append(demo_user)
     write_users(users)
+    return jsonify({'success': True}) 
+
+@app.route('/api/inject_demo_user', methods=['GET'])
+def inject_demo_user():
+    import json, os
+    demo_path = os.path.join(os.path.dirname(__file__), 'demo_user.json')
+    with open(demo_path, 'r') as f:
+        demo_user = json.load(f)
+    users = read_users()
+    users = [u for u in users if u.get('email') != '210103344@stu.sdu.edu.kz']
+    users.append(demo_user)
+    write_users(users)
     return jsonify({'success': True})
