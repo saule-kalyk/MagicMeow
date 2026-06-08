@@ -216,7 +216,7 @@ def create_account():
 
         # 创建新用户
         new_user = {
-            'id': max([u['id'] for u in users if isinstance(u['id'], int)], default=0) + 1,
+            'id': max([u.get('id') for u in users if isinstance(u.get('id'), int)], default=0) + 1,
             'username': username,
             'password_hash': generate_password_hash(password),
             'email': email or f'{username}@magicmeow.com',
