@@ -974,11 +974,11 @@ def inject_demo_user():
     users = read_users()
     user = next((u for u in users if u.get('id') == 10), None)
     if not user:
-        return jsonify({'error': 'User not found'}), 404
+        return jsonify({'error': 'User not found', 'users_count': len(users)}), 404
     user['focus_records'] = demo_data['focus_records']
     user['mood_records'] = demo_data['mood_records']
     user['plans'] = demo_data['plans']
     user['folders'] = demo_data['folders']
     user['created_at'] = demo_data['created_at']
     write_users(users)
-    return jsonify({'success': True})
+    return jsonify({'success': True, 'username': user.get('username'), 'plans_count': len(user['plans'])})
