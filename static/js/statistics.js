@@ -191,44 +191,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function renderFocusChart(tab, data) {
-        const containerId = `barContainer-${tab}`;
-        const yAxisId = `yAxisMarks-${tab}`;
-        const container = document.getElementById(containerId);
-        const yAxisContainer = document.getElementById(yAxisId);
+        const container = document.getElementById(tab === 'monthly' ? 'barContainer' : `barContainer-${tab}`);
+        const yAxisContainer = document.getElementById(tab === 'monthly' ? 'yAxisMarks' : `yAxisMarks-${tab}`);
         container.innerHTML = '';
         yAxisContainer.innerHTML = '';
 
-        const defaultMaxValue = 70;
-        const yAxisSteps = 5;
-        let maxValue = defaultMaxValue;
-        let stepValue = Math.ceil(maxValue / yAxisSteps);
+        // Фиксированная шкала
+        const fixedSteps = ['60+', '60', '50', '40', '30', '20', '10', '0'];
+        const maxValue = 60;
+        const barMaxHeight = 160;
 
-        if (data && data.length > 0) {
-            maxValue = Math.max(...data.map(item => item.value), defaultMaxValue);
-            stepValue = Math.ceil(maxValue / yAxisSteps);
-        }
-
-        for (let i = yAxisSteps; i >= 0; i--) {
+        fixedSteps.forEach(step => {
             const mark = document.createElement('div');
             mark.className = 'y-axis-mark';
-            mark.textContent = i * stepValue;
-            mark.style.fontSize = '12px';
-            mark.style.color = '#333';
-            mark.style.marginBottom = '10px';
+            mark.textContent = step;
             yAxisContainer.appendChild(mark);
-        }
+        });
 
-        // Определяем метки в зависимости от вкладки
+        // Метки по X
         let defaultLabels;
         if (tab === 'daily') {
             defaultLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
         } else if (tab === 'monthly') {
-            // дни месяца — берём реальное кол-во дней текущего месяца
             const now = new Date();
             const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
             defaultLabels = Array.from({ length: daysInMonth }, (_, i) => String(i + 1));
         } else {
-            // all — месяцы года
             defaultLabels = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
         }
 
@@ -237,31 +225,47 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const orderedData = defaultLabels.map(label => {
-            const item = data.find(d => d.day === label) || { day: label, value: 0 };
-            return item;
+            return data.find(d => d.day === label) || { day: label, value: 0 };
         });
+
+        // Динамическая ширина баров
+        const totalBars = defaultLabels.length;
+        const chartWidth = container.offsetWidth || 400;
+        const barGroupWidth = Math.floor(chartWidth / totalBars);
+        const barWidth = Math.max(Math.floor(barGroupWidth * 0.6), 2);
 
         const colors = ['#C9E2D0', '#CEB3FF', '#F4A099', '#FDE9A8', '#A3C1F3', '#FF8CE9', '#93B493'];
         orderedData.forEach((item, index) => {
             const group = document.createElement('div');
             group.className = 'bar-group';
+            group.style.width = barGroupWidth + 'px';
+            group.style.height = '10rem';
+
             const bar = document.createElement('div');
             bar.className = 'bar-focus';
-            const barMaxHeight = 160;
-            bar.style.height = `${(item.value / maxValue) * barMaxHeight}px`;
+            bar.style.width = barWidth + 'px';
+
+            const clampedValue = Math.min(item.value, maxValue);
+            bar.style.height = `${(clampedValue / maxValue) * barMaxHeight}px`;
             bar.style.backgroundColor = colors[index % colors.length];
             bar.title = `${item.value} min`;
+
+            if (item.value > maxValue) {
+                bar.style.height = `${barMaxHeight}px`;
+                bar.style.outline = '2px solid #9b6dff';
+            }
+
             const label = document.createElement('div');
             label.className = 'day-label';
             label.textContent = item.day;
-            label.style.fontSize = '12px';
+            label.style.fontSize = tab === 'monthly' ? '0.5rem' : '0.75rem';
             label.style.color = '#333';
+
             group.appendChild(bar);
             group.appendChild(label);
             container.appendChild(group);
         });
     }
-
     fetchFocusStats().then(stats => updateFocusStats(stats));
 
     // Mood Stats (unchanged)
@@ -282,19 +286,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateMoodStats(stats) {
-        const monthlyBars = document.querySelectorAll('#monthly-content .bar');
-        bars.forEach(bar => {
-            const star = bar.querySelector(".star");
+        const dailyBars = document.querySelectorAll('.bar-daily');
+        dailyBars.forEach(bar => {
             const mood = parseInt(bar.getAttribute('data-id'));
-            star.addEventListener("click", async () => {
-                if (selectedMood === mood) {
-                    await clearMood();
-                    selectedMood = null;
-                } else {
-                    await saveMood(mood);
-                    selectedMood = mood;
-                }
-            });
+            const shape = bar.querySelector('.bar-shape-daily');
+            const star = bar.querySelector('.star');
+            if (stats.daily.mood === mood) {
+                shape.classList.add('active');
+                star.src = '/static/images/filledStar.png';
+            } else {
+                shape.classList.remove('active');
+                star.src = '/static/images/star.png';
+            }
+        });
+
+        const monthlyBars = document.querySelectorAll('#monthly-content .bar');
+        monthlyBars.forEach(bar => {
+            const mood = parseInt(bar.querySelector('.value').getAttribute('data-mood'));
+            const value = stats.monthly[mood] || 0;
+            const valueElement = bar.querySelector('.value');
+            valueElement.textContent = `${value.toFixed(2)}%`;
+            const shape = bar.querySelector('.bar-shape');
+            const star = bar.querySelector('.star');
+            if (value > 30) {
+                shape.classList.add('tall');
+                star.src = '/static/images/filledStar.png';
+            } else {
+                shape.classList.remove('tall');
+                star.src = '/static/images/star.png';
+            }
         });
 
         const allBars = document.querySelectorAll('#all-content .bar');
@@ -310,20 +330,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 star.src = '/static/images/filledStar.png';
             } else {
                 shape.classList.remove('tall');
-                star.src = '/static/images/star.png';
-            }
-        });
-
-        const dailyBars = document.querySelectorAll('.bar-daily');
-        dailyBars.forEach(bar => {
-            const mood = parseInt(bar.getAttribute('data-id'));
-            const shape = bar.querySelector('.bar-shape-daily');
-            const star = bar.querySelector('.star');
-            if (stats.daily.mood === mood) {
-                shape.classList.add('active');
-                star.src = '/static/images/filledStar.png';
-            } else {
-                shape.classList.remove('active');
                 star.src = '/static/images/star.png';
             }
         });

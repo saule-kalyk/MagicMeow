@@ -295,12 +295,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     confirmFinishBtn.addEventListener("click", function () {
-        const usedDuration = initialTime - timeLeft; // Actual time used
-        if (usedDuration >= 60) { // Only save if duration is 1 minute or more
+        const usedDuration = initialTime - timeLeft;
+        if (usedDuration > 0) {
             saveFocusSession(usedDuration);
-            showCompletionPopup(); // Show completion popup
-        } else {
-            console.log("Focus session not saved: Duration less than 1 minute.");
+            showCompletionPopup();
         }
         stopTimer();
         resetToInitialState();
@@ -551,33 +549,33 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchUserInfo().then(fetchCurrentSession);
 
     function handleBunnyAction(action, params) {
-    switch (action) {
-        case 'statistics':
-            window.location.href = '/statistics';
-            break;
+        switch (action) {
+            case 'statistics':
+                window.location.href = '/statistics';
+                break;
 
-        case 'view':
-            window.location.href = '/view';
-            break;
- 
-        case 'add_plan': {
-            const title = params.title ? encodeURIComponent(params.title) : '';
-            window.location.href = title ? `/addPlan?title=${title}` : '/addPlan';
-            break;
-        }
- 
-        case 'focus': {
-            const duration = params.duration || 30;
-            timeLeft = duration * 60;
-            initialTime = duration * 60;
-            updateTimerDisplay();
-            focusTitle.textContent = "Focusing...";
-            pauseBtn.style.display = "block";
-            addFocusBtn.style.display = "none";
-            startBtn.style.display = "none";
-            startTimer();
-            break;
+            case 'view':
+                window.location.href = '/view';
+                break;
+
+            case 'add_plan': {
+                const title = params.title ? encodeURIComponent(params.title) : '';
+                window.location.href = title ? `/addPlan?title=${title}` : '/addPlan';
+                break;
+            }
+
+            case 'focus': {
+                const duration = params.duration || 30;
+                timeLeft = duration * 60;
+                initialTime = duration * 60;
+                updateTimerDisplay();
+                focusTitle.textContent = "Focusing...";
+                pauseBtn.style.display = "block";
+                addFocusBtn.style.display = "none";
+                startBtn.style.display = "none";
+                startTimer();
+                break;
+            }
         }
     }
-}
 });

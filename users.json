@@ -12,7 +12,14 @@
                 "language": "en",
                 "time_personality": "task-oriented"
             },
-            "focus_records": [],
+            "focus_records": [
+                {
+                    "id": "d4244215-836c-4d18-b6e5-3255448ac65a",
+                    "duration": 6,
+                    "timestamp": "2026-06-08T03:34:48.734Z",
+                    "type": "focus"
+                }
+            ],
             "mood_records": [
                 {
                     "date": "2026-06-05",
@@ -21,6 +28,10 @@
                 {
                     "date": "2026-06-07",
                     "mood": 1
+                },
+                {
+                    "date": "2026-06-08",
+                    "mood": 3
                 }
             ],
             "plans": [

@@ -509,7 +509,7 @@ body {
     position: relative;
     border: 0.125rem solid black;
     border-radius: 1.25rem;
-    padding: 1.25rem;
+    padding: 1.25rem 1.25rem 2.5rem 1.25rem;
     height: 15.625rem;
     box-sizing: border-box;
 }
@@ -526,25 +526,36 @@ body {
     position: relative;
     height: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.chart-grid::before {
+    content: '';
+    position: absolute;
+    left: 2.5rem;
+    top: 0;
+    width: 0.125rem;
+    height: 100%;
+    background-color: black;
 }
 
 .chart-content {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 0 2.5rem;
+    flex: 1;
     height: 10rem;
+    padding: 0 1rem;
+    margin-bottom: -0.25rem;
 }
 
 .bar-group {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 3.125rem;
-    height: 10rem;
     justify-content: flex-end;
+    margin-bottom: -1rem;
 }
 
 .bar-focus {
@@ -560,30 +571,37 @@ body {
 }
 
 .y-axis {
-    position: absolute;
-    top: 0;
-    left: 2.5rem;
-    width: 0.125rem;
-    background-color: black;
-    height: 88%;
+    position: static;
+    width: 2.5rem;
+    height: 12rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-end;
     font-size: 0.75rem;
     font-weight: bold;
+    flex-shrink: 0;
+    align-self: stretch;
+    padding-top: 2rem;
 }
 
 .y-mark {
     transform: translateY(30%);
 }
 
+.y-axis-mark {
+    line-height: 1;
+    text-align: right;
+    padding-right: 0.5rem;
+    margin-bottom: 0.6rem;
+}
+
 .x-axis {
     position: absolute;
-    bottom: 1.5625rem;
+    bottom: 0;
     left: 2.5rem;
     height: 0.125rem;
-    width: calc(100% - 5rem);
+    width: calc(100% - 3.5rem);
     background-color: black;
 }
 
