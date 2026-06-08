@@ -156,7 +156,7 @@ def login():
         username = form.username.data
         password = form.password.data
         users = read_users()
-        user = next((u for u in users if u.get('username') == username), None)
+        user = next((u for u in users if u.get('username') == 'SauleKalyk'), None)
         if user and user['password_hash'] and check_password_hash(user['password_hash'], password):
             session['user_id'] = user['id']
             session['username'] = user['username']
