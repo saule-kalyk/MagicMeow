@@ -960,17 +960,10 @@ def get_plans():
 if __name__ == '__main__':
     app.run(debug=True)
 
-@app.route('/api/inject_demo_user', methods=['GET'])
+@app.route('/api/inject_demo_user', methods=['POST'])
 def inject_demo_user():
-    demo_user = {
-        "id": "demo-210103344",
-        "username": "Saule",
-        "password_hash": "",
-        "email": "210103344@stu.sdu.edu.kz",
-        # ... весь JSON из файла который я сгенерировала
-    }
+    demo_user = request.json
     users = read_users()
-    # удалить если уже есть
     users = [u for u in users if u.get('email') != '210103344@stu.sdu.edu.kz']
     users.append(demo_user)
     write_users(users)
